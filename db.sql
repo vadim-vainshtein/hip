@@ -7,16 +7,25 @@ USE hip_concerts;
 CREATE TABLE performers
 (
 	performer_id	INT NOT NULL AUTO_INCREMENT,
-	performer_name	VARCHAR(255) NOT NULL,
+	performer_name	VARCHAR NOT NULL,
 	PRIMARY KEY (performer_id)
+);
+
+CREATE TABLE places
+(
+	place_id	INT NOT NULL AUTO_INCREMENT,
+	place_name	VARCHAR NOT NULL,
+	place_address	VARCHAR NOT NULL,
+	PRIMARY KEY (place_id)
 );
 
 CREATE TABLE concerts
 (
         concert_id      INT NOT NULL AUTO_INCREMENT,
         date_time       DATETIME NOT NULL,
-        place_id        INT NOT NULL,
-        PRIMARY KEY (concert_id)
+        place_id        INT,
+        PRIMARY KEY (concert_id),
+        FOREIGN KEY (place_id) REFERENCES places (place_id) ON DELETE SET NULL
 );
 
 
