@@ -14,8 +14,8 @@ CREATE TABLE performers
 CREATE TABLE places
 (
 	place_id	INT NOT NULL AUTO_INCREMENT,
-	place_name	VARCHAR NOT NULL,
-	place_address	VARCHAR NOT NULL,
+	place_name	VARCHAR(255) NOT NULL,
+	place_address	VARCHAR(255) NOT NULL,
 	PRIMARY KEY (place_id)
 );
 
