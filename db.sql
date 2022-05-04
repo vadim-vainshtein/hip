@@ -7,7 +7,7 @@ USE hip_concerts;
 CREATE TABLE performers
 (
 	performer_id	INT NOT NULL AUTO_INCREMENT,
-	performer_name	VARCHAR NOT NULL,
+	performer_name	VARCHAR(255) NOT NULL,
 	PRIMARY KEY (performer_id)
 );
 
