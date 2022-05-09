@@ -12,10 +12,10 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>HipServlet</servlet-name>
-		<url-pattern>/hip-spb</url-pattern>
+		<url-pattern>/HipServlet</url-pattern>
 	</servlet-mapping>
 
-	<security-constraint>
+	<!--security-constraint>
 
 		<web-resource-collection>
 			<web-resource-name>Restricted Area</web-resource-name>
@@ -35,6 +35,6 @@
 
 	<security-role>
 		<role-name>hip_admin</role-name>
-	</security-role>
+	</security-role-->
 
 </web-app>

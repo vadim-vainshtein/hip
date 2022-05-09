@@ -6,14 +6,14 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 		 version="4.0">
 
-	<!--servlet>
+	<servlet>
 		<servlet-name>HipServlet</servlet-name>
 		<servlet-class>ru.hip_spb.servlet.HipServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>HipServlet</servlet-name>
-		<url-pattern>/hip-spb</url-pattern>
-	</servlet-mapping-->
+		<url-pattern>/HipServlet</url-pattern>
+	</servlet-mapping>
 
 	<!--security-constraint>
 
