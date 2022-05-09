@@ -1,0 +1,45 @@
+12.05.22
+19:00
+
+Эглерио (Выборгское шоссе, 5, корп 1)
+
+
+Ирина Дуброва (вокал),
+Дарья Маглёванная (фидель),
+Константин Щеников-Архаров (плекторная лютня)
+
+Вечер музыки XIV века
+
+https://vk.com/eglerio1?w=wall-180990334_1390
+
+
+1. Искать исполнителей в базе:
+
+	Для каждого исполнителя:
+
+	SELECT performer_id FROM performers WHERE performer_name=<performer>;
+
+	(если пусто -> добавить исполнителя в базу)
+	INSERT INTO performers (performer_name) values(<name>);
+	получить performer_id, записать в массив
+	
+2. Искать место в базе:
+
+	SELECT place_id FROM places WHERE place_name=<place>;
+	(если пусто -> добавить место в базу)
+	INSERT INTO places (place_name, place_address) values(<name>, <address>);
+
+3. Отформатировать дату и время
+	YYYY-MM-DD hh:mm:ss
+	
+4. Записать всё в базу:
+
+	INSERT INTO concerts (date_time, place_id, program_name, link)
+	VALUES (<date_time>, <place_id>, <program_name>, <link>);
+	
+	Получить concert_id;
+	
+	Для каждого исполнителя:
+
+	INSERT INTO performers_concerts (performer_id, concert_id)
+	VALUES (<performer_id>, <concert_id>);
