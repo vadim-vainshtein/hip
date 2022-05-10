@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+    
+    <Resource
+        auth="Container"
+        name="hipDB"
+        type="javax.sql.DataSource"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        charset="utf-8"
+        password="hippie_forever"
+        maxIdle="5"
+        maxWait="5000"
+        username="hip_user"
+        url="jdbc:mysql://localhost:3306/hip_concerts?characterEncoding=UTF-8"
+        maxActive="150"
+    />
+
+</Context>
