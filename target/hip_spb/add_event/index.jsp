@@ -15,6 +15,7 @@
     
         
         Программа: <input type="text" name="program" />
+        <br>
         Дата: <input type="date" name="date" />
         Время: <input type="time" name="time" />
         
