@@ -1,32 +1,17 @@
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-
+<%@page import="ru.hip_spb.controller.ConcertController"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
-
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script src="/hip-spb/script/add.js"> </script>
-</head>
-
-<body>
-    
-    <form id="add_form" name="add_form" method="post" action="HipServlet">
-    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Концерты HIP в Санкт-Петербурге</title>
+    </head>
+    <body>
+        <%
+            ConcertController concertController = new ConcertController();
+        %>
         
-        Программа: <input type="text" name="program" />
-        Дата: <input type="date" name="date" />
-        Время: <input type="time" name="time" />
+        <%= concertController.format() %>
         
-        <fieldset id="performers">
-            <legend>Исполнители</legend>
-            <input type="button" value="Добавить" onclick="AddPerformer();"/>
-            <input type="text" name="performer0" />
-        </fieldset>
-
-        <input type="submit" id="submit" value="Отправить"/>
-        
-    </form>
-    
-</body>
+    </body>
 </html>

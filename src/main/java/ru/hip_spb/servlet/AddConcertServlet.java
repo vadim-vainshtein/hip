@@ -23,7 +23,7 @@ import ru.hip_spb.dao.ConcertDAO;
 )
 
 
-public class HipServlet extends HttpServlet {
+public class AddConcertServlet extends HttpServlet {
 
 
 	@Override
@@ -44,7 +44,7 @@ public class HipServlet extends HttpServlet {
                 writer.println("Got it!<br>");
             } catch (SQLException ex) {
                 writer.print("Fail!<br>");
-                Logger.getLogger(HipServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AddConcertServlet.class.getName()).log(Level.SEVERE, null, ex);
                 connInfo = ex.toString();
             }
             
