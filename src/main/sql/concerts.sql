@@ -22,7 +22,7 @@ CREATE TABLE places
 CREATE TABLE concerts
 (
         concert_id      INT NOT NULL AUTO_INCREMENT,
-        date_time       DATETIME NOT NULL,
+        date_time       DATETIME,
         place_id        INT,
         program_name   VARCHAR(255),
         link		VARCHAR(1024),

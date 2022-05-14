@@ -7,17 +7,17 @@
         <res-auth>Container</res-auth>
     </resource-ref>
     <servlet>
-        <servlet-name>HipServlet</servlet-name>
+        <servlet-name>AddConcertServlet</servlet-name>
         <servlet-class>ru.hip_spb.servlet.AddConcertServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>HipServlet</servlet-name>
-        <url-pattern>/HipServlet</url-pattern>
+        <servlet-name>AddConcertServlet</servlet-name>
+        <url-pattern>/add_event/add/</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Restricted Area</web-resource-name>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/add_event/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>hip_admin</role-name>

@@ -2,6 +2,7 @@
 /home/dima/hip/src/main/java/ru/hip_spb/model/Place.java
 /home/dima/hip/src/main/java/ru/hip_spb/servlet/AddConcertServlet.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/ConcertDAO.java
+/home/dima/hip/src/main/java/ru/hip_spb/dao/DAOException.java
 /home/dima/hip/src/main/java/ru/hip_spb/model/Concert.java
 /home/dima/hip/src/main/java/ru/hip_spb/model/Performer.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/DAO.java

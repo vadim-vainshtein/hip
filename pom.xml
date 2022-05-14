@@ -15,14 +15,6 @@
     
     <dependencies>
         
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
-        </dependency>
-
-
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -65,7 +57,7 @@
     </dependencies>
     
     <build>
-        <finalName>hip_spb</finalName>
+        <finalName>hip-spb</finalName>
     </build>
     
     <properties>

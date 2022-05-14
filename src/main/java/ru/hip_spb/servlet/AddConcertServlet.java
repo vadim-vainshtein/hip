@@ -13,8 +13,11 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 
 import ru.hip_spb.dao.ConcertDAO;
+import ru.hip_spb.dao.DAOException;
+import ru.hip_spb.model.Concert;
 
 @MultipartConfig(
 	fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -24,56 +27,47 @@ import ru.hip_spb.dao.ConcertDAO;
 
 
 public class AddConcertServlet extends HttpServlet {
-
-
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-					throws ServletException, IOException {
-            
-            response.setContentType("text/html; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.println("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /></head>");
-            writer.println("<body>HipServlet<br>");
-            
-            String connInfo;
-            
-            try {
-                writer.println("Trying to get connection info...<br>");
-                connInfo = ConcertDAO.TestConnection();
-                writer.println("Got it!<br>");
-            } catch (SQLException ex) {
-                writer.print("Fail!<br>");
-                Logger.getLogger(AddConcertServlet.class.getName()).log(Level.SEVERE, null, ex);
-                connInfo = ex.toString();
-            }
-            
-            writer.println(connInfo);
-            
-            writer.println("</body></html>");
-	}
      
+        private static final Logger logger = Logger.getLogger(AddConcertServlet.class.getName());
+        
         @Override
         protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
             
             PrintWriter writer = response.getWriter();
-                        
+            Concert concert = getConcertFormData(request);
+            ConcertDAO concertDAO;
+            
+            try {
+                 concertDAO= new ConcertDAO();
+                 concertDAO.insert(concert);
+            } catch (DAOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+            
+        } 
+        
+        private Concert getConcertFormData(HttpServletRequest request) {
+            
             String programName = request.getParameter("program");
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
-                
-            writer.println("Program name: "  + programName);
-            writer.println("Concert date: " + concertDate);
-            writer.println("Concert time: " + concertTime);
             
             String performer = request.getParameter("performer0");
+  
             int i = 1;
-            
             while(performer != null) {
-                writer.println("performer " + i + ": " + performer);
                 performer = request.getParameter("performer" + i);
                 i++;
             }
-        } 
+            
+            return new Concert(
+                        0,
+                        null,
+                        null,
+                        programName,
+                        null,
+                        null
+            );
+        }
 }
