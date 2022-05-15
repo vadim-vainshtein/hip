@@ -47,7 +47,9 @@ public class ConcertController {
         StringBuilder stringBuilder = new StringBuilder();
         
         for(Concert concert : concerts) {
-            stringBuilder.append(view.format(concert.getProgramName()));
+            stringBuilder.append(view.format(
+                    concert.getProgramName(),
+                    concert.getDateTime()));
         }
         
         return stringBuilder.toString();

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -35,7 +37,7 @@ public class AddConcertServlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
             
             PrintWriter writer = response.getWriter();
-            Concert concert = getConcertFormData(request);
+            Concert concert = getConcertFormData(request, writer);
             ConcertDAO concertDAO;
             
             try {
@@ -47,23 +49,24 @@ public class AddConcertServlet extends HttpServlet {
             
         } 
         
-        private Concert getConcertFormData(HttpServletRequest request) {
+        private Concert getConcertFormData(HttpServletRequest request, PrintWriter writer) {
             
             String programName = request.getParameter("program");
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
             
-            String performer = request.getParameter("performer0");
-  
-            int i = 1;
-            while(performer != null) {
-                performer = request.getParameter("performer" + i);
-                i++;
-            }
+            logger.log(Level.INFO, "getConcertFormData(): " + programName + "; " + concertDate + "; " + concertTime);
             
+            writer.print(concertDate + "<br>" + concertTime);
+            
+            String performers[] = request.getParameterValues("performer0");
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = LocalDateTime.parse(concertDate + " " + concertTime, formatter);
+                          
             return new Concert(
                         0,
-                        null,
+                        dateTime,
                         null,
                         programName,
                         null,

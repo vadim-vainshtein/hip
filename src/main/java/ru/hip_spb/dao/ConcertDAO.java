@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,11 +48,14 @@ public class ConcertDAO extends DAO<Concert> {
 
             while (resultSet.next()) {
                 int concertId = resultSet.getInt("concert_id");
+                String dateTimeString = resultSet.getString("date_time");
+                LocalDateTime dateTime = LocalDateTime.parse(dateTimeString);
+                        
                 String programName = resultSet.getString("program_name");
 
                 Concert concert = new Concert(
                         concertId,
-                        null,
+                        dateTime,
                         null,
                         programName,
                         null,
@@ -71,7 +76,9 @@ public class ConcertDAO extends DAO<Concert> {
     @Override
     public void insert(Concert data) throws DAOException {
         
-        final String QUERY = "INSERT INTO " + TABLE + "( program_name )" + "VALUES (?)";
+        final String QUERY = "INSERT INTO " + TABLE + 
+                "( program_name, date_time )" +
+                "VALUES (?, ?)";
         
         try {
             
@@ -80,6 +87,7 @@ public class ConcertDAO extends DAO<Concert> {
             logger.info("ConcertDAO.insert(): prepare statement..." );
             PreparedStatement statement = connection.prepareStatement(QUERY);
             statement.setString(1, data.getProgramName());
+            statement.setString(2, data.getDateTime().toString());
             logger.info("ConcertDAO.insert(): execute a query..." );
             int rowsAffected = statement.executeUpdate();
             
