@@ -37,7 +37,7 @@ public class AddConcertServlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
             
             PrintWriter writer = response.getWriter();
-            Concert concert = getConcertFormData(request, writer);
+            Concert concert = getConcertFormData(request);
             ConcertDAO concertDAO;
             
             try {
@@ -49,17 +49,15 @@ public class AddConcertServlet extends HttpServlet {
             
         } 
         
-        private Concert getConcertFormData(HttpServletRequest request, PrintWriter writer) {
+        private Concert getConcertFormData(HttpServletRequest request) {
             
             String programName = request.getParameter("program");
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
-            
-            logger.log(Level.INFO, "getConcertFormData(): " + programName + "; " + concertDate + "; " + concertTime);
-            
-            writer.print(concertDate + "<br>" + concertTime);
-            
+                       
             String performers[] = request.getParameterValues("performer0");
+            
+            
             
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(concertDate + " " + concertTime, formatter);
