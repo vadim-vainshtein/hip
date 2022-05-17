@@ -23,7 +23,7 @@
         <fieldset id="performers">
             <legend>Исполнители</legend>
             <input type="button" value="Добавить" onclick="AddPerformer();"/>
-            <input type="text" name="performer0" />
+            <input type="text" name="performer" />
         </fieldset>
 
         <input type="submit" id="submit" value="Отправить"/>

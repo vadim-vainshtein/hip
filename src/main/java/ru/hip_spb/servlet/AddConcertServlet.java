@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.model.Concert;
+import ru.hip_spb.model.Performer;
 
 @MultipartConfig(
 	fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -55,10 +55,13 @@ public class AddConcertServlet extends HttpServlet {
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
                        
-            String performers[] = request.getParameterValues("performer0");
+            String performerNames[] = request.getParameterValues("performer");
+            Performer performers[] = new Performer[performerNames.length];
             
-            
-            
+            for(int i = 0; i < performers.length; i++) {
+                performers[i] = new Performer(0, performerNames[i]);
+            }
+           
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(concertDate + " " + concertTime, formatter);
                           
@@ -68,7 +71,7 @@ public class AddConcertServlet extends HttpServlet {
                         null,
                         programName,
                         null,
-                        null
+                        performers
             );
         }
 }
