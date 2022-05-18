@@ -3,19 +3,28 @@ package ru.hip_spb.view;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import ru.hip_spb.model.Performer;
 
 
 public class ConcertView {
 
-    private Writer writer;
+    private final Writer writer;
     
     public ConcertView(Writer writer) {
         this.writer = writer;
     }
     
-    public String format(String programName, LocalDateTime dateTime) {
+    public String format(String programName, LocalDateTime dateTime, Performer[] performers) {
         
-        String result = "<br>" + programName + "<br>" + dateTime.toString();
+        String result = "<br><h1>" + programName + "</h1><br>" + dateTime.toString() + 
+                "<br><b>Исполнители:</b>";
+        
+        for(Performer performer : performers) {
+            result += "<p>" + performer.getName() + "</p>";
+        }
+        
+        result += "<hr>";
+        
         return result;
     }
     

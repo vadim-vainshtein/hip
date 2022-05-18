@@ -18,7 +18,10 @@ import ru.hip_spb.model.Performer;
  */
 public class ConcertDAO extends DAO<Concert> {
 
-    private static final String TABLE = "concerts";
+    private static final String CONCERTS_TABLE = "concerts";
+    private static final String CONCERT_ID = "concert_id";
+    private static final String PERFORMERS_CONCERTS_TABLE = "performers_concerts";
+    private static final String PERFORMER_ID = "performer_id";
 
     public ConcertDAO() throws DAOException {
         super();
@@ -27,17 +30,41 @@ public class ConcertDAO extends DAO<Concert> {
     @Override
     public ArrayList<Concert> getAll() throws DAOException {
 
-        final String GET_CONCERTS_QUERY = "SELECT * FROM " + TABLE;
+        final String GET_CONCERTS_QUERY = "SELECT * FROM " + CONCERTS_TABLE;
+        final String GET_PERFORMERS_ID_QUERY = "SELECT " + PERFORMER_ID +
+                " FROM " + PERFORMERS_CONCERTS_TABLE + " WHERE " + 
+                CONCERT_ID + " = ? ";
+        
         ArrayList<Concert> concerts = new ArrayList<>();
 
         try (
-                 Connection connection = connectionFactory.getConnection();  Statement statement = connection.createStatement();) {
+                Connection connection = connectionFactory.getConnection();
+                Statement statement = connection.createStatement();
+                ) 
+        {
             ResultSet resultSet = statement.executeQuery(GET_CONCERTS_QUERY);
+            
+            PerformerDAO performerDAO = new PerformerDAO();
 
             while (resultSet.next()) {
                 int concertId = resultSet.getInt("concert_id");
                 Timestamp timestamp = resultSet.getTimestamp("date_time");
                 LocalDateTime dateTime = timestamp.toLocalDateTime();
+                
+                // Get all the performers (IDs) of the concert
+                PreparedStatement performersStatement = connection.prepareStatement(GET_PERFORMERS_ID_QUERY);
+                performersStatement.setInt(1, concertId);
+                logger.log(Level.INFO, "ConcertDAO.getAll(): Executing query: {0}",
+                        performersStatement.toString());
+                ResultSet performersSet = performersStatement.executeQuery();
+                
+                // Get Performer objects by the obtained IDs, add them into a List
+                ArrayList<Performer> performers = new ArrayList<>();
+                                
+                while(performersSet.next()) {
+                    int performerId = performersSet.getInt(PERFORMER_ID);
+                    performers.add(performerDAO.getById(performerId));
+                }
 
                 String programName = resultSet.getString("program_name");
 
@@ -47,7 +74,7 @@ public class ConcertDAO extends DAO<Concert> {
                         null,
                         programName,
                         null,
-                        null
+                        performers.toArray(new Performer[0])
                 );
 
                 concerts.add(concert);
@@ -64,7 +91,7 @@ public class ConcertDAO extends DAO<Concert> {
     @Override
     public int insert(Concert data) throws DAOException {
 
-        final String INSERT_CONCERT_QUERY = "INSERT INTO " + TABLE
+        final String INSERT_CONCERT_QUERY = "INSERT INTO " + CONCERTS_TABLE
                 + "( program_name, date_time )"
                 + "VALUES (?, ?)";
         

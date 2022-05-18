@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.model.Concert;
@@ -49,7 +48,8 @@ public class ConcertController {
         for(Concert concert : concerts) {
             stringBuilder.append(view.format(
                     concert.getProgramName(),
-                    concert.getDateTime()));
+                    concert.getDateTime(),
+                    concert.getPerformers()));
         }
         
         return stringBuilder.toString();
