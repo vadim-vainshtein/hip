@@ -16,8 +16,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
+import ru.hip_spb.dao.PerformerDAO;
 import ru.hip_spb.model.Concert;
 import ru.hip_spb.model.Performer;
 
@@ -31,6 +35,41 @@ import ru.hip_spb.model.Performer;
 public class AddConcertServlet extends HttpServlet {
      
         private static final Logger logger = Logger.getLogger(AddConcertServlet.class.getName());
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+            
+                final int ACT_GET_NAMES = 1;
+                
+                String action = request.getParameter("act");
+                
+                switch(Integer.parseInt(action)) {
+                    
+                    // Get a list of performers' names matching "substr"
+                    case ACT_GET_NAMES:
+                        try {
+                            String subString = request.getParameter("substr");
+                            PerformerDAO performerDAO = new PerformerDAO();
+                            ArrayList<String> namesList = performerDAO.getNamesList(subString);
+                            PrintWriter writer = response.getWriter();
+                            
+                            //convert to JSON
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            Gson gson = gsonBuilder.create();
+                            
+                            String jsonString = gson.toJson(namesList);
+                            
+                            writer.print(jsonString);
+                            
+                        } catch (DAOException ex) {
+                            logger.log(Level.WARNING, "AddConcertServlet: getNames: error reading DB\n{0}", ex);
+                        }
+                        break;
+                }
+            }
+        
         
         @Override
         protected void doPost(HttpServletRequest request,

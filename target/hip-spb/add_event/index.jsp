@@ -22,10 +22,13 @@
         
         <fieldset id="performers">
             <legend>Исполнители</legend>
-            <input type="button" value="Добавить" onclick="AddPerformer();"/>
-            <input type="text" name="performer" />
+            <input type="button" onclick="AddPerformer()" value="Добавить исполнителя">
+            
         </fieldset>
-
+        Место: <input type="text" name="place" /> Адрес: <input type="text" name="address" />
+        <br>
+        Ссылка: <input type="text" name="link" />
+        <br>
         <input type="submit" id="submit" value="Отправить"/>
         
     </form>

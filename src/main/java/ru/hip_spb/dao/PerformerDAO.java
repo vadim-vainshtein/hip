@@ -71,6 +71,7 @@ public class PerformerDAO extends DAO<Performer> {
     public Performer getById(int id) throws DAOException {
 
         final String QUERY = "SELECT * FROM " + TABLE + " WHERE " + ID + "=" + String.valueOf(id);
+        
         Performer performer = null;
 
         try (
@@ -92,6 +93,36 @@ public class PerformerDAO extends DAO<Performer> {
 
         return performer;
     }
+    
+    /**
+     * Search database of Performers for <code>subString</code> in performer's name
+     * @param subString what to search in database
+     * @return returns a list of performers' names, where subString is found
+     */
+    public ArrayList<String> getNamesList(String subString) throws DAOException {
+        
+        final String QUERY = "SELECT " + PERFORMER_NAME + " FROM " + TABLE +
+                " WHERE LOCATE(" + subString + ", " + PERFORMER_NAME + ")>0";
+        
+        ArrayList<String> result = new ArrayList<>();
+        
+        try(
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
+                )
+        {
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result.add(resultSet.getString(PERFORMER_NAME));
+            }
+            
+        } catch(SQLException exception) {
+            logger.log(Level.SEVERE, null, exception);
+            throw new DAOException("PerformerDAO.getNamesList(): error reading DB");
+        }
+        
+        return result;
+    }
 
     /**
      * Searchs database for a performer called <code>name</code> Creates one if
@@ -110,12 +141,12 @@ public class PerformerDAO extends DAO<Performer> {
                 
         try (
                 Connection connection = connectionFactory.getConnection();
-                Statement statement = connection.createStatement();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
                 )
         {
 
             logger.log(Level.INFO, "PerformerDAO.getByNameOrCreate(): executing statement: {0}", QUERY);
-            ResultSet resultSet = statement.executeQuery(QUERY);
+            ResultSet resultSet = statement.executeQuery();
 
             // Try to find performer in DB
             if (resultSet.next()) {
