@@ -1,4 +1,80 @@
+Настройка tomcat
+
+1. Скопировать драйвер mysql-connector*.jar в [...]/tomcat9/server/lib
+2. Создать БД tmc_access (команды в файле tmc_access.sql) с пользователем admin и паролем 12345
+3. В conf/server.xml, раздел engine (перед host) убрать/закомментить Realm по-умолчанию, и вставить:
+
+<Realm  className="org.apache.catalina.realm.JDBCRealm"
+                    driverName="com.mysql.cj.jdbc.Driver"
+                    connectionURL="jdbc:mysql://localhost:3306/tmc_access"
+                    connectionName="tmc_access" connectionPassword="password"
+                    userTable="users" userNameCol="user_name" userCredCol="user_pass"
+                    userRoleTable="user_roles" roleNameCol="role_name" />
+
+---------------
+
 Настройка Tomcat DBCP 
-http://www.javenue.info/post/10
 
+1. Создать БД hip_concerts (concerts.sql)
 
+2. Смотри concerts.sql, чтобы совпадали логин/пароль, название БД
+
+    В conf/server.xml, раздел host:
+
+<resource name="hipDB" auth="Container" type="javax.sql.DataSource"/>
+                
+                <resourceparams name="hipDB">
+                    <parameter>
+                        <name>factory</name>
+                        <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
+                    </parameter>
+                    <parameter>
+                        <name>url</name>
+                        <value>jdbc:mysql://localhost:3306/hip_concerts</value>
+                    </parameter>
+                    <parameter>
+                        <name>username</name>
+                        <value>hip_user</value>
+                    </parameter>
+                    <parameter>
+                        <name>password</name>
+                        <value>hippie_forever</value>
+                    </parameter>
+                    <parameter>
+                        <name>driverClassName</name>
+                        <value>com.mysql.cj.jdbc.Driver</value>
+                    </parameter>
+                    <parameter>
+                        <name>maxActive</name>
+                        <value>100</value>
+                    </parameter>
+                    <parameter>
+                        <name>maxIdle</name>
+                        <value>10</value>
+                    </parameter>
+                    <parameter>
+                        <name>maxWait</name>
+                        <value>10000</value>
+                    </parameter>
+                    <parameter>
+                        <name>removeAbandoned</name>
+                        <value>true</value>
+                    </parameter>
+                    <parameter>
+                        <name>removeAbandonedTimeout</name>
+                        <value>60</value>
+                    </parameter>
+                </resourceparams>
+
+---------------
+
+Настройка кодировки
+
+1. В файле server.xml в секции Connector добавить `URIEncoding="UTF-8"`, вот так:
+
+<Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443"
+               URIEncoding="UTF-8"/>
+
+2. В файле tomcat/conf/web.xml раскомментировать секцию <filter> setCharacterEncodingFilter и соответствующий <filter-mapping>
