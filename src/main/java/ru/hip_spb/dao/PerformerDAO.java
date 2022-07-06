@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import static ru.hip_spb.dao.DAO.logger;
 import ru.hip_spb.model.Performer;
 
 /**

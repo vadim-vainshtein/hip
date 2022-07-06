@@ -43,11 +43,11 @@ public class AddConcertServlet extends HttpServlet {
             
                 final int ACT_GET_NAMES = 1;
                 
-                String action = request.getParameter("act");
-                
-                switch(Integer.parseInt(action)) {
+                int action = Integer.parseInt(request.getParameter("act"));
+                                
+                switch(action) {
                     
-                    // Get a list of performers' names matching "substr"
+                    // Get a list of performers' names matching "substr" and sends them back as a json
                     case ACT_GET_NAMES:
                         try {
                             String subString = request.getParameter("substr");
@@ -62,6 +62,7 @@ public class AddConcertServlet extends HttpServlet {
                             String jsonString = gson.toJson(namesList);
                             
                             writer.print(jsonString);
+                            writer.close();
                             
                         } catch (DAOException ex) {
                             logger.log(Level.WARNING, "AddConcertServlet: getNames: error reading DB\n{0}", ex);
@@ -75,7 +76,7 @@ public class AddConcertServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
             
-            PrintWriter writer = response.getWriter();
+            //PrintWriter writer = response.getWriter();
             Concert concert = getConcertFormData(request);
             ConcertDAO concertDAO;
             
