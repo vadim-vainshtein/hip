@@ -62,7 +62,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 
-function  ready() {
+function ready() {
 
     AddPerformer();
 }
