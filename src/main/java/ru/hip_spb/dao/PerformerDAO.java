@@ -63,7 +63,27 @@ public class PerformerDAO extends DAO<Performer> {
 
     @Override
     public ArrayList<Performer> getAll() throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+        final String QUERY = "SELECT * FROM " + TABLE;
+
+        ArrayList<Performer> result = new ArrayList<>();
+        
+        try(
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
+            )
+        {
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result.add(new Performer(resultSet.getInt(ID), resultSet.getString(PERFORMER_NAME)));
+            }
+            
+        } catch(SQLException exception) {
+            logger.log(Level.SEVERE, null, exception);
+            throw new DAOException("PerformerDAO.getNamesList(): error reading DB");
+        }
+        
+        return result;
     }
 
     @Override
@@ -122,6 +142,7 @@ public class PerformerDAO extends DAO<Performer> {
         
         return result;
     }
+
 
     /**
      * Searchs database for a performer called <code>name</code> Creates one if

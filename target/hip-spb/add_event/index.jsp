@@ -12,7 +12,7 @@
 
 <body>
     
-    <form id="add_form" name="add_form" method="post" action="add/">
+    <form id="add_form" name="add_form" method="post" action="add">
     
         
         Программа: <input type="text" name="program" />

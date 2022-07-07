@@ -30,7 +30,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AddConcertServlet</servlet-name>
-        <url-pattern>/add_event/add/</url-pattern>
+        <url-pattern>/add_event/add</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>
