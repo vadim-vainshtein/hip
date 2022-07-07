@@ -11,6 +11,7 @@ function AddPerformer() {
     let addInstrumentButton = document.createElement("input");
     
     div.id = "performer_div" + count;
+    div.className = "performer_div";
     
     nameLabel.innerHTML = "Имя: ";
     
@@ -18,7 +19,7 @@ function AddPerformer() {
     performerInput.id = "performer" + count;
     performerInput.setAttribute("list", "performers_list");
     
-    instrumentLabel.innerHTML = "Инструмент: ";
+    instrumentLabel.innerHTML = " Инструмент: ";
     
     instrumentInput.name = "instrument" + count;
     instrumentInput.value = "instrument";
