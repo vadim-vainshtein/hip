@@ -1,4 +1,5 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="ru.hip_spb.controller.PerformerController"%>
 
 <!DOCTYPE html>
 
@@ -22,7 +23,12 @@
         
         <fieldset id="performers">
             <datalist id="performers_list">
-                
+                <%
+                    PerformerController performerController = new PerformerController();
+                %>
+        
+                <%= performerController.printDatalist() %>
+
             </datalist>
             <legend>Исполнители</legend>
             <input type="button" onclick="AddPerformer()" value="Добавить исполнителя">

@@ -16,7 +16,7 @@ function AddPerformer() {
     
     performerInput.name = "performer";
     performerInput.id = "performer" + count;
-    performerInput.value = "performer" + count;
+    performerInput.setAttribute("list", "performers_list");
     
     instrumentLabel.innerHTML = "Инструмент: ";
     

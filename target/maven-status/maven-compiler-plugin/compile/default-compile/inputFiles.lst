@@ -1,4 +1,5 @@
 /home/dima/hip/src/main/java/ru/hip_spb/dao/ConnectionFactory.java
+/home/dima/hip/src/main/java/ru/hip_spb/controller/PerformerController.java
 /home/dima/hip/src/main/java/ru/hip_spb/model/Place.java
 /home/dima/hip/src/main/java/ru/hip_spb/servlet/AddConcertServlet.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/PerformerDAO.java
