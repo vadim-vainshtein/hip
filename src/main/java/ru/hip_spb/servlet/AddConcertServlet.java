@@ -9,19 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
-import ru.hip_spb.dao.PerformerDAO;
 import ru.hip_spb.model.Concert;
 import ru.hip_spb.model.Performer;
 
@@ -40,43 +34,6 @@ public class AddConcertServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-            
-                final int ACT_GET_NAMES = 1;
-                
-                int action = 0;
-                
-                try {
-                    action = Integer.parseInt(request.getParameter("act"));
-                } catch(NumberFormatException exception) { }
-
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                PrintWriter writer = response.getWriter();
-                
-                                
-                switch(action) {
-                    
-                    // Get a list of performers' names and send them back as a json
-                    case ACT_GET_NAMES:
-                        try {
-                            PerformerDAO performerDAO = new PerformerDAO();
-                            ArrayList<Performer> namesList = performerDAO.getAll();
-                            
-                            //convert to JSON
-                            GsonBuilder gsonBuilder = new GsonBuilder();
-                            Gson gson = gsonBuilder.create();
-                            
-                            String jsonString = gson.toJson(namesList);
-                            
-                            writer.print(jsonString);
-                            
-                        } catch (DAOException ex) {
-                            logger.log(Level.WARNING, "AddConcertServlet: getNames: error reading DB\n{0}", ex);
-                        }
-                        break;
-                }
-
-                writer.close();
             }
         
         

@@ -7,7 +7,6 @@ function AddPerformer() {
     let nameLabel = document.createElement("label");
     let performerInput = document.createElement("input");
     let instrumentLabel = document.createElement("label");
-    let instrumentInput = document.createElement("input");
     let addInstrumentButton = document.createElement("input");
     
     div.id = "performer_div" + count;
@@ -21,11 +20,12 @@ function AddPerformer() {
     
     instrumentLabel.innerHTML = " Инструмент: ";
     
-    instrumentInput.name = "instrument" + count;
-    instrumentInput.value = "instrument";
-    
     addInstrumentButton.type = "button";
     addInstrumentButton.value = "+";
+    /* 
+        the addInstrumentButton.id is used to store the index of the current performer
+        maybe I should find a more clear way to store that...
+    */
     addInstrumentButton.id = count;
     addInstrumentButton.onclick = function() {
         AddInstrument(this);
@@ -34,7 +34,6 @@ function AddPerformer() {
     div.append(nameLabel);
     div.append(performerInput);
     div.append(instrumentLabel);
-    div.append(instrumentInput);
     div.append(addInstrumentButton);
 
     document.getElementById("performers").append(div);
@@ -44,8 +43,8 @@ function AddPerformer() {
 function AddInstrument(addButton) {
     
     let instrumentInput = document.createElement("input");
+    // get the id of a performer from the button id
     instrumentInput.name = "instrument" + addButton.id;
-    instrumentInput.value = "instrument" + addButton.id;
     document.getElementById("performer_div" + addButton.id).insertBefore(instrumentInput, addButton);
 }
 
