@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
@@ -16,8 +17,10 @@ import java.util.logging.Logger;
 
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
+import ru.hip_spb.dao.PlaceDAO;
 import ru.hip_spb.model.Concert;
 import ru.hip_spb.model.Performer;
+import ru.hip_spb.model.Place;
 
 @MultipartConfig(
 	fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -41,25 +44,33 @@ public class AddConcertServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
             
-            //PrintWriter writer = response.getWriter();
-            Concert concert = getConcertFormData(request);
-            ConcertDAO concertDAO;
-            
+            response.setContentType("text/html");
+            response.setCharacterEncoding("utf-8");
+
+            PrintWriter writer = response.getWriter();
+
             try {
-                 concertDAO= new ConcertDAO();
-                 concertDAO.insert(concert);
-            } catch (DAOException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                saveConcertFormData(request);
+            } catch (DAOException e) {
+                logger.log(Level.INFO, e.getMessage());
+                writer.print("<BR> Не удалось записать информацию");
             }
             
+            writer.print("<BR> Информация успешно сохранена");
         } 
         
-        private Concert getConcertFormData(HttpServletRequest request) {
+        /*
+         * Gets info from a form and saves it to DB
+         */
+        private void saveConcertFormData(HttpServletRequest request) throws DAOException {
             
             String programName = request.getParameter("program");
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
-                       
+            String placeName = request.getParameter("place");
+            String placeAddress = request.getParameter("address");
+            String link = request.getParameter("link");
+                                 
             String performerNames[] = request.getParameterValues("performer");
             Performer performers[] = new Performer[performerNames.length];
             
@@ -69,14 +80,20 @@ public class AddConcertServlet extends HttpServlet {
            
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(concertDate + " " + concertTime, formatter);
-                          
-            return new Concert(
+
+            PlaceDAO placeDAO = new PlaceDAO();
+            Place place = placeDAO.getByNameOrCreate(placeName, placeAddress);
+            
+            Concert concert = new Concert(
                         0,
                         dateTime,
-                        null,
+                        place,
                         programName,
-                        null,
+                        link,
                         performers
             );
+
+            ConcertDAO concertDAO = new ConcertDAO();
+            concertDAO.insert(concert);
         }
 }

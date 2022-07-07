@@ -92,8 +92,8 @@ public class ConcertDAO extends DAO<Concert> {
     public int insert(Concert data) throws DAOException {
 
         final String INSERT_CONCERT_QUERY = "INSERT INTO " + CONCERTS_TABLE
-                + "( program_name, date_time )"
-                + "VALUES (?, ?)";
+                + "( program_name, place_id, date_time, link )"
+                + "VALUES (?, ?, ?, ?)";
         
         int generatedID;
         
@@ -103,7 +103,10 @@ public class ConcertDAO extends DAO<Concert> {
                 = connection.prepareStatement(INSERT_CONCERT_QUERY, Statement.RETURN_GENERATED_KEYS);) {
             
             statement.setString(1, data.getProgramName());
-            statement.setString(2, data.getDateTime().toString());
+            statement.setInt(2, data.getPlace().getId());
+            statement.setString(3, data.getDateTime().toString());
+            statement.setString(4, data.getLink());
+            
             int rowsAffected = statement.executeUpdate();
 
             logger.log(Level.INFO, "ConcertDAO.insert(): wrote {0} line(s)", rowsAffected);

@@ -80,7 +80,7 @@ public class PerformerDAO extends DAO<Performer> {
             
         } catch(SQLException exception) {
             logger.log(Level.SEVERE, null, exception);
-            throw new DAOException("PerformerDAO.getNamesList(): error reading DB");
+            throw new DAOException("PerformerDAO.getAll(): error reading DB");
         }
         
         return result;
@@ -152,6 +152,8 @@ public class PerformerDAO extends DAO<Performer> {
      * @return Returns performer ID
      * @throws ru.hip_spb.dao.DAOException
      */
+
+    // TODO: return a Performer object, not just id
     public int getByNameOrCreate(String name) throws DAOException {
 
         final String QUERY = "SELECT * FROM " + TABLE + " WHERE "
@@ -187,6 +189,13 @@ public class PerformerDAO extends DAO<Performer> {
         return id;
     }
 
+    /**
+     * Adds a performer to a concert. The performer is identified by name,
+     * performer's id is obtained while writing data to DB
+     * @param performer - a Performer to be added to a concert
+     * @param concert_id - a concert to add the performer
+     * @throws DAOException
+     */
     void addToConcert(Performer performer, int concert_id) throws DAOException {
         
         final String QUERY = "INSERT INTO performers_concerts "

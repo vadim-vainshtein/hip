@@ -1,5 +1,6 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@page import="ru.hip_spb.controller.PerformerController"%>
+<%@page import="ru.hip_spb.controller.PlaceController"%>
 
 <!DOCTYPE html>
 
@@ -35,7 +36,15 @@
             <p><input type="button" onclick="AddPerformer()" value="Добавить исполнителя"></p>
             
         </fieldset>
-        <p>Место: <input type="text" name="place" /> Адрес: <input type="text" name="address" /></p>
+
+        <datalist id="places">
+            <%
+                PlaceController placeController = new PlaceController();
+            %>
+        
+            <%= placeController.printDatalist() %>
+        </datalist>
+        <p>Место: <input type="text" name="place" list="places"/> Адрес: <input type="text" name="address" /></p>
         <p>Ссылка: <input type="text" name="link" /></p>
         <p><input type="submit" id="submit" value="Отправить"/></p>
         
