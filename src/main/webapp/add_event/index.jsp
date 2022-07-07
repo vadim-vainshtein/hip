@@ -21,6 +21,9 @@
         Время: <input type="time" name="time" />
         
         <fieldset id="performers">
+            <datalist id="performers_list">
+                
+            </datalist>
             <legend>Исполнители</legend>
             <input type="button" onclick="AddPerformer()" value="Добавить исполнителя">
             
