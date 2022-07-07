@@ -80,7 +80,7 @@ public class PerformerDAO extends DAO<Performer> {
             
         } catch(SQLException exception) {
             logger.log(Level.SEVERE, null, exception);
-            throw new DAOException("PerformerDAO.getNamesList(): error reading DB");
+            throw new DAOException("PerformerDAO.getAll(): error reading DB");
         }
         
         return result;

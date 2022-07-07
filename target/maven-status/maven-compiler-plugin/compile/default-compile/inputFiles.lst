@@ -10,4 +10,5 @@
 /home/dima/hip/src/main/java/ru/hip_spb/dao/ConcertDAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/DAOException.java
 /home/dima/hip/src/main/java/ru/hip_spb/model/Concert.java
+/home/dima/hip/src/main/java/ru/hip_spb/controller/PlaceController.java
 /home/dima/hip/src/main/java/ru/hip_spb/controller/ConcertController.java

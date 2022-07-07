@@ -18,8 +18,32 @@ public class PlaceDAO extends DAO<Place> {
 
     @Override
     public ArrayList<Place> getAll() throws DAOException {
-        // TODO Auto-generated method stub
-        return null;
+        
+        final String QUERY = "SELECT * FROM places";
+
+        ArrayList<Place> result = new ArrayList<>();
+        
+        try(
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
+            )
+        {
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result.add(
+                    new Place(
+                        resultSet.getInt("place_id"),
+                        resultSet.getString("place_name"),
+                        resultSet.getString("place_address"))
+                    );
+            }
+            
+        } catch(SQLException exception) {
+            logger.log(Level.SEVERE, null, exception);
+            throw new DAOException("PlaceDAO.getAll(): error reading DB");
+        }
+        
+        return result;
     }
 
     @Override
