@@ -15,6 +15,9 @@ public class Place {
     }
 
     public Place() {
+        id = 0;
+        name = "";
+        address = "";
     }
 
     public int getId() {

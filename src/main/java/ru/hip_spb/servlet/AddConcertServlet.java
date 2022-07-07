@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ru.hip_spb.controller.PlaceController;
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.dao.PlaceDAO;
@@ -36,9 +37,35 @@ public class AddConcertServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+                final int ACT_GET_ADDRESS = 1;
+                
+                int action = 0;
+                
+                try {
+                    action = Integer.parseInt(request.getParameter("act"));
+                } catch(NumberFormatException exception) { }
+
+                //TODO: maybe to use JSON although I have one string only?
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter writer = response.getWriter();
+                                
+                switch(action) {
+                    
+                    // Get an address of a place
+                    case ACT_GET_ADDRESS:
+                        
+                        String placeName = request.getParameter("name");
+                        PlaceController placeController = new PlaceController();
+                        String placeAddress = placeController.getAddressByPlaceName(placeName);
+                        writer.print(placeAddress);
+
+                        break;
+                }
+
+                writer.close();
             }
-        
         
         @Override
         protected void doPost(HttpServletRequest request,

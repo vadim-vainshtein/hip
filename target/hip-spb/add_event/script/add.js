@@ -48,6 +48,7 @@ function AddInstrument(addButton) {
     document.getElementById("performer_div" + addButton.id).insertBefore(instrumentInput, addButton);
 }
 
+
 function httpGetAsync(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();
@@ -61,6 +62,17 @@ function httpGetAsync(theUrl, callback)
     xmlHttp.send(null);
 }
 
+function FillAddress(address) {
+    
+    let addressInput = document.getElementById("address");
+    addressInput.value = address;
+}
+
+function AutoFillAddress(name) {
+
+    let query = "add?act=1&name=" + name;
+    httpGetAsync(query, FillAddress);
+}
 
 function ready() {
 

@@ -90,6 +90,41 @@ public class PlaceDAO extends DAO<Place> {
 
         return generatedID;
     }
+
+    /**
+     * @param name
+     * @return Returns a Place object. If there is no match in DB, id=0, and address=""
+     * @throws DAOException
+     */
+    public Place getByName(String name) throws DAOException {
+
+        final String QUERY = "SELECT * FROM places WHERE place_name = '" + name + "'";
+
+        int id = 0;
+        String address = "";
+                
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
+            )
+        {
+            logger.log(Level.INFO, "PlaceDAO.getByName(): executing statement: {0}", QUERY);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Try to find Place in DB
+            if (resultSet.next()) {
+                id = resultSet.getInt("place_id");
+                address = resultSet.getString("place_address");
+            }
+            
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, "PlaceDAO.getByNameOrCreate(): error writing DB", exception);
+            throw new DAOException("PlaceDAO.getByNameOrCreate(): error writing DB");
+        }
+
+        //TODO: is id=0 the best way to show, that object was not found?
+        return new Place(id, name, address);
+    }
     
     /**
      * Searchs database for a Place called <code>name</code> Creates one if
@@ -101,35 +136,19 @@ public class PlaceDAO extends DAO<Place> {
      */
     public Place getByNameOrCreate(String name, String address) throws DAOException {
 
-        final String QUERY = "SELECT * FROM places WHERE place_name = '" + name + "'";
+        
+        // Try to find Place in DB
+        Place place = getByName(name);
 
-        int id;
-                
-        try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-            )
-        {
-
-            logger.log(Level.INFO, "PlaceDAO.getByNameOrCreate(): executing statement: {0}", QUERY);
-            ResultSet resultSet = statement.executeQuery();
-
-            // Try to find Place in DB
-            if (resultSet.next()) {
-                id = resultSet.getInt("place_id");
-            }
-            // Create one if not found
-            else {
-               id = insert(new Place(0, name, address));
-            }
-
-        } catch (SQLException exception) {
-            logger.log(Level.SEVERE, "PlaceDAO.getByNameOrCreate(): error writing DB", exception);
-            throw new DAOException("PlaceDAO.getByNameOrCreate(): error writing DB");
+        // Create one if not found
+        if(place.getId() == 0) {
+            place.setAddress(address);
+            int id = insert(place);
+            place.setId(id);
         }
 
-        logger.log(Level.INFO, "PlaceDAO.getByNameOrCreate(): OK; id = {0}", id);
+        logger.log(Level.INFO, "PlaceDAO.getByNameOrCreate(): OK; id = {0}", place.getId());
         
-        return new Place(id, name, address);
+        return place;
     }
 }
