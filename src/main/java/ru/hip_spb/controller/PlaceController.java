@@ -39,4 +39,21 @@ public class PlaceController {
 
         return result.toString();
     }
+
+    /**
+     * @return Returns an address of a place by name, if one is found in DB. If not - returns an empty string
+     */
+    public String getAddressByPlaceName(String name) {
+
+        Place place = new Place();
+               
+        try {
+            PlaceDAO placeDAO = new PlaceDAO();
+            place = placeDAO.getByName(name);
+        } catch (DAOException e) {
+            logger.log(Level.WARNING, "getAddressByPlaceName(): error executing PlaceDAO.getByName", e);
+        }
+        
+        return place.getAddress();
+    }
 }

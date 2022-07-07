@@ -44,7 +44,10 @@
         
             <%= placeController.printDatalist() %>
         </datalist>
-        <p>Место: <input type="text" name="place" list="places"/> Адрес: <input type="text" name="address" /></p>
+        <p>
+            Место: <input type="text" name="place" list="places" onchange="AutoFillAddress(this.value)"/>
+            Адрес: <input id="address" type="text" name="address" />
+        </p>
         <p>Ссылка: <input type="text" name="link" /></p>
         <p><input type="submit" id="submit" value="Отправить"/></p>
         
