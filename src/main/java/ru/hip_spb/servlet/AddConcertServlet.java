@@ -53,8 +53,7 @@ public class AddConcertServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter writer = response.getWriter();
                 
-                //writer.print("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body>");
-                
+                                
                 switch(action) {
                     
                     // Get a list of performers' names and send them back as a json
@@ -63,10 +62,6 @@ public class AddConcertServlet extends HttpServlet {
                             PerformerDAO performerDAO = new PerformerDAO();
                             ArrayList<Performer> namesList = performerDAO.getAll();
                             
-                          /*   for(Performer p : namesList) {
-                                writer.println(p.getName());
-                            }*/
-
                             //convert to JSON
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             Gson gson = gsonBuilder.create();
@@ -81,8 +76,6 @@ public class AddConcertServlet extends HttpServlet {
                         break;
                 }
 
-                //writer.print("</body></html>");
-                
                 writer.close();
             }
         
