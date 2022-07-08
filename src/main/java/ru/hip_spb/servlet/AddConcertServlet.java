@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.dao.PlaceDAO;
 import ru.hip_spb.model.Concert;
+import ru.hip_spb.model.Instrument;
 import ru.hip_spb.model.Performer;
 import ru.hip_spb.model.Place;
 
@@ -99,10 +101,21 @@ public class AddConcertServlet extends HttpServlet {
             String link = request.getParameter("link");
                                  
             String performerNames[] = request.getParameterValues("performer");
-            Performer performers[] = new Performer[performerNames.length];
             
+            Performer performers[] = new Performer[performerNames.length];
+            ArrayList<Instrument[]> instruments = new ArrayList<>();            
+            
+            // Generate Performer and Instrument objects
             for(int i = 0; i < performers.length; i++) {
                 performers[i] = new Performer(0, performerNames[i]);
+                String[] instrumentNames = request.getParameterValues("instrument" + i);
+                Instrument[] instrumentsArray = new Instrument[instrumentNames.length];
+                
+                for(j = 0; j < instrumentNames.length; j++) {
+                    instrumentsArray[j] = new Instrument(0, instrumentNames[j]);
+                }
+
+                instruments.add(instrumentsArray);
             }
            
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

@@ -44,10 +44,12 @@ CREATE TABLE performers_concerts
 	FOREIGN KEY (concert_id) REFERENCES concerts (concert_id)
 );
 
-CREATE TABLE performers_instruments
+CREATE TABLE perf_instr_concerts
 (
 	performer_id	INT,
 	instrument_id	INT,
+	concert_id		INT,
 	FOREIGN KEY (performer_id) REFERENCES performers (performer_id),
-	FOREIGN KEY (instrument_id) REFERENCES instruments (instrument_id)
+	FOREIGN KEY (instrument_id) REFERENCES instruments (instrument_id),
+	FOREIGN KEY (concert_id) REFERENCES concerts (concert_id)
 );
