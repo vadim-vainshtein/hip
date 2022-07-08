@@ -16,8 +16,7 @@ public class ConcertView {
     
     public String format(String programName, LocalDateTime dateTime, Performer[] performers) {
         
-        String result = "<br><h1>" + programName + "</h1><br>" + dateTime.toString() + 
-                "<br><b>Исполнители:</b>";
+        String result = "<br><h1>" + programName + "</h1><br>" + dateTime.toString();
         
         for(Performer performer : performers) {
             result += "<p>" + performer.getName() + "</p>";

@@ -18,24 +18,40 @@
     <form id="add_form" name="add_form" method="post" action="add">
     
         
-        <p>Программа: <input type="text" name="program" /></p>
-        <p>Дата: <input type="date" name="date" /></p>
-        <p>Время: <input type="time" name="time" /></p>
-        
-        <fieldset id="performers">
-            <datalist id="performers_list">
-                <%
-                    PerformerController performerController = new PerformerController();
-                %>
-        
-                <%= performerController.printDatalist() %>
+        <p>Название: <input type="text" name="program_name" /></p>
+        <p>Программа:</p>
+        <p>
+            <textarea name="program_text" maxlength="10000" cols="100" rows="10">
 
-            </datalist>
-            <legend>Исполнители</legend>
+            </textarea>
+        </p>
+        <p>
+            Дата: <input type="date" name="date" />
+            Время: <input type="time" name="time" />
+        </p>
+
+        <datalist id="performers_list">
+            <%
+                PerformerController performerController = new PerformerController();
+            %>
+    
+            <%= performerController.printDatalist() %>
+
+        </datalist>
+        
+        <div id="ensembles-wrapper">
             
-            <p><input type="button" onclick="AddPerformer()" value="Добавить исполнителя"></p>
+            <input type="button" value="Добавить ансамбль" onclick="AddEnsemble(this)"/>
             
-        </fieldset>
+            <fieldset id="ensemble0">
+                <legend>Ансамбль №1</legend>
+            
+                <p>Название ансамбля: <input></p>
+                <div><input type="button" onclick="AddPerformer(this)" value="Добавить исполнителя"></div>
+            
+            </fieldset>
+            
+        </div>
 
         <datalist id="places">
             <%
@@ -47,8 +63,8 @@
         <p>
             Место: <input type="text" name="place" list="places" onchange="AutoFillAddress(this.value)"/>
             Адрес: <input id="address" type="text" name="address" />
+            Ссылка: <input type="text" name="link" />
         </p>
-        <p>Ссылка: <input type="text" name="link" /></p>
         <p><input type="submit" id="submit" value="Отправить"/></p>
         
     </form>

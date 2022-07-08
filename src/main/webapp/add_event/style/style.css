@@ -5,3 +5,7 @@ body {
 div.performer_div {
     padding: 5pt;
 }
+
+textarea {
+    width: 100%;
+}

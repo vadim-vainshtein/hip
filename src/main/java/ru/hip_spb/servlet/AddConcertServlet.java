@@ -93,7 +93,7 @@ public class AddConcertServlet extends HttpServlet {
          */
         private void saveConcertFormData(HttpServletRequest request) throws DAOException {
             
-            String programName = request.getParameter("program");
+            String programName = request.getParameter("program_name");
             String concertDate = request.getParameter("date");
             String concertTime = request.getParameter("time");
             String placeName = request.getParameter("place");
@@ -111,7 +111,7 @@ public class AddConcertServlet extends HttpServlet {
                 String[] instrumentNames = request.getParameterValues("instrument" + i);
                 Instrument[] instrumentsArray = new Instrument[instrumentNames.length];
                 
-                for(j = 0; j < instrumentNames.length; j++) {
+                for(int j = 0; j < instrumentNames.length; j++) {
                     instrumentsArray[j] = new Instrument(0, instrumentNames[j]);
                 }
 

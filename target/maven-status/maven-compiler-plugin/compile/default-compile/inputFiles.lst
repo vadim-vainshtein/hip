@@ -3,9 +3,11 @@
 /home/dima/hip/src/main/java/ru/hip_spb/dao/DAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/view/ConcertView.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/PlaceDAO.java
+/home/dima/hip/src/main/java/ru/hip_spb/model/Instrument.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/ConnectionFactory.java
 /home/dima/hip/src/main/java/ru/hip_spb/controller/PerformerController.java
 /home/dima/hip/src/main/java/ru/hip_spb/servlet/AddConcertServlet.java
+/home/dima/hip/src/main/java/ru/hip_spb/dao/InstrumentDAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/PerformerDAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/ConcertDAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/DAOException.java
