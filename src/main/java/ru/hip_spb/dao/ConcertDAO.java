@@ -92,7 +92,7 @@ public class ConcertDAO extends DAO<Concert> {
     public int insert(Concert data) throws DAOException {
 
         final String INSERT_CONCERT_QUERY = "INSERT INTO " + CONCERTS_TABLE
-                + "( program_name, place_id, date_time, link )"
+                + "( program_name, place_id, date_time, link, program_text )"
                 + "VALUES (?, ?, ?, ?)";
         
         int generatedID;
@@ -106,6 +106,7 @@ public class ConcertDAO extends DAO<Concert> {
             statement.setInt(2, data.getPlace().getId());
             statement.setString(3, data.getDateTime().toString());
             statement.setString(4, data.getLink());
+            statement.setString(5, data.getProgramText());
             
             int rowsAffected = statement.executeUpdate();
 

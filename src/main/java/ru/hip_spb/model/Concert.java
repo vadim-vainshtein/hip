@@ -10,6 +10,7 @@ public class Concert {
     private LocalDateTime dateTime;
     private Place place;
     private String programName;
+    private String programText;
     private String link;
     private Performer performers[];
 
@@ -23,6 +24,15 @@ public class Concert {
     }
 
     public Concert() {
+    
+    }
+    
+    public String getProgramText() {
+        return programText;
+    }
+    
+    public void setProgramText(String programText) {
+        this.programText = programText;
     }
 
     public int getConcert_id() {

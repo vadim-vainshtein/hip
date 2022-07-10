@@ -8,33 +8,33 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import ru.hip_spb.model.Instrument;
+import ru.hip_spb.model.EnsembleName;
 
-public class InstrumentDAO extends DAO<Instrument> {
+public class EnsembleNameDAO extends DAO<EnsembleName> {
 
-    protected InstrumentDAO() throws DAOException {
+    protected EnsembleNameDAO() throws DAOException {
         super();
 
     }
 
     @Override
-    public Instrument getById(int id) throws DAOException {
+    public EnsembleName getById(int id) throws DAOException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public int insert(Instrument data) throws DAOException {
+    public int insert(EnsembleName data) throws DAOException {
         
-        final String INSERT_INSTRUMENT_QUERY
-                = "INSERT INTO instruments (instrument_name) VALUES( ? )";
+        final String INSERT_ENSEMBLE_QUERY
+                = "INSERT INTO ensembles (ensemble_name) VALUES( ? )";
 
         int generatedID;
 
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement
-                    = connection.prepareStatement(INSERT_INSTRUMENT_QUERY, Statement.RETURN_GENERATED_KEYS);
+                    = connection.prepareStatement(INSERT_ENSEMBLE_QUERY, Statement.RETURN_GENERATED_KEYS);
             )
         {
             statement.setNString(1, data.getName());
@@ -42,8 +42,8 @@ public class InstrumentDAO extends DAO<Instrument> {
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
-                logger.log(Level.SEVERE, "InstrumentDAO.insert() error: no instrument inserted");
-                throw new DAOException("No instrument inserted");
+                logger.log(Level.SEVERE, "EnsembleDAO.insert() error: no ensemble inserted");
+                throw new DAOException("No ensemble inserted");
             }
 
             ResultSet generategKeys = statement.getGeneratedKeys();
@@ -51,12 +51,12 @@ public class InstrumentDAO extends DAO<Instrument> {
             if (generategKeys.next()) {
                 generatedID = generategKeys.getInt(1);
             } else {
-                logger.log(Level.SEVERE, "InstrumentDAO.insert() error: no ID obtaned");
+                logger.log(Level.SEVERE, "EnsembleDAO.insert() error: no ID obtaned");
                 throw new DAOException("No ID obtained");
             }
 
         } catch (SQLException exception) {
-            logger.log(Level.SEVERE, "InstrumentDAO.insert(): error writing DB {0}", exception.getMessage());
+            logger.log(Level.SEVERE, "ensembleDAO.insert(): error writing DB {0}", exception.getMessage());
             throw new DAOException("error writing DB: " + exception.getMessage());
         }
 
@@ -64,11 +64,9 @@ public class InstrumentDAO extends DAO<Instrument> {
     }
 
     @Override
-    public ArrayList<Instrument> getAll() throws DAOException {
+    public ArrayList<EnsembleName> getAll() throws DAOException {
         // TODO Auto-generated method stub
         return null;
     }
-    
-
     
 }

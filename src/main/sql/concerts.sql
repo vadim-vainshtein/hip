@@ -33,7 +33,7 @@ CREATE TABLE concerts
 
 CREATE TABLE instruments
 (
-	instrument_id		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	instrument_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	instrument_name	VARCHAR(255) NOT NULL
 );
 
@@ -62,3 +62,5 @@ CREATE TABLE perf_instr_ensembles_concerts
 	FOREIGN KEY (concert_id) REFERENCES concerts (concert_id),
 	FOREIGN KEY (ensemble_id) REFERENCES ensembles (ensemble_id)
 );
+
+INSERT INTO ensembles (ensemble_name) values ("");

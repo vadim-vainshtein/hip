@@ -1,5 +1,5 @@
 let performersCount = 0;
-let ensemblesCount = 1;
+let ensemblesCount = 0;
 
 function AddPerformer(button) {
 
@@ -9,20 +9,20 @@ function AddPerformer(button) {
     let instrumentLabel = document.createElement("label");
     let addInstrumentButton = document.createElement("input");
     
-    div.id = "performer_div" + performersCount;
+    div.id = "performer_div" + button.dataset.ensembleNumber + "_" + button.dataset.performersCount;
     div.className = "performer_div";
     
     nameLabel.innerHTML = "Имя: ";
     
-    performerInput.name = "performer";
-    performerInput.id = "performer" + performersCount;
+    performerInput.name = "performer" + button.dataset.ensembleNumber;
+    performerInput.id = "performer" + button.dataset.ensembleNumber + "_" + button.dataset.performersCount;
     performerInput.setAttribute("list", "performers_list");
     
     instrumentLabel.innerHTML = " Инструмент: ";
     
     addInstrumentButton.type = "button";
     addInstrumentButton.value = "+";
-    addInstrumentButton.setAttribute('data-instrument-id', performersCount);
+    addInstrumentButton.setAttribute('data-instrument-id', button.dataset.ensembleNumber + "_" + button.dataset.performersCount);
     addInstrumentButton.onclick = function() {
         AddInstrument(this);
     };
@@ -33,10 +33,12 @@ function AddPerformer(button) {
     div.append(addInstrumentButton);
 
     button.parentNode.append(div);
-    performersCount++;
+    button.dataset.performersCount++
 }
 
 function AddEnsemble(button) {
+
+    ensemblesCount++;
 
     let fieldSet = document.createElement("fieldset");
     let legend = document.createElement("legend");
@@ -48,10 +50,16 @@ function AddEnsemble(button) {
     fieldSet.id = "ensemble" + ensemblesCount;
     legend.innerHTML = "Ансамбль №" + (ensemblesCount + 1);
     ensembleNameP.innerHTML = "Название ансамбля: ";
-    ensemleInput.name = "ensemble" + ensemblesCount;
+    ensemleInput.name = "ensemble";
     
     addPerformerButton.type = "button";
     addPerformerButton.value = "Добавить исполнителя";
+
+    // addPerformerButton will store the info about the number of the current ensemble
+    // and count the performers. This info is needed to generate correct input names
+    addPerformerButton.setAttribute("data-ensemble-number", ensemblesCount);
+    addPerformerButton.setAttribute("data-performers-count", 0);
+
     addPerformerButton.onclick = function() {
         AddPerformer(this);
     }
@@ -64,13 +72,11 @@ function AddEnsemble(button) {
     fieldSet.append(performersWrapperDiv);
 
     button.parentNode.append(fieldSet);
-    ensemblesCount++;
 }
 
 function AddInstrument(addButton) {
     
     let instrumentInput = document.createElement("input");
-    console.log(addButton.dataset.instrumentId);
     instrumentInput.name = "instrument" + addButton.dataset.instrumentId;
     document.getElementById("performer_div" + addButton.dataset.instrumentId).insertBefore(instrumentInput, addButton);
 }

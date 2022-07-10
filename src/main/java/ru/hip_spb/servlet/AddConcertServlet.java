@@ -21,6 +21,7 @@ import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.dao.PlaceDAO;
 import ru.hip_spb.model.Concert;
+import ru.hip_spb.model.EnsembleName;
 import ru.hip_spb.model.Instrument;
 import ru.hip_spb.model.Performer;
 import ru.hip_spb.model.Place;
@@ -99,25 +100,30 @@ public class AddConcertServlet extends HttpServlet {
             String placeName = request.getParameter("place");
             String placeAddress = request.getParameter("address");
             String link = request.getParameter("link");
-                                 
-            String performerNames[] = request.getParameterValues("performer");
             
-            Performer performers[] = new Performer[performerNames.length];
-            ArrayList<Instrument[]> instruments = new ArrayList<>();            
-            
-            // Generate Performer and Instrument objects
-            for(int i = 0; i < performers.length; i++) {
-                performers[i] = new Performer(0, performerNames[i]);
-                String[] instrumentNames = request.getParameterValues("instrument" + i);
-                Instrument[] instrumentsArray = new Instrument[instrumentNames.length];
-                
-                for(int j = 0; j < instrumentNames.length; j++) {
-                    instrumentsArray[j] = new Instrument(0, instrumentNames[j]);
-                }
+            ArrayList<Performer> performers = new ArrayList<>();
+                        
+            String ensembleNamesStr[] = request.getParameterValues("ensemble");
 
-                instruments.add(instrumentsArray);
+            for(int i = 0; i < ensembleNamesStr.length; i++) {
+                
+                String performerNames[] = request.getParameterValues("performer" + i);
+            
+                // Generate Performer objects
+                for(int j = 0; j < performerNames.length; j++) {
+                    
+                    String[] instrumentNames = request.getParameterValues("instrument" + i + "_" + "j");
+                    Instrument[] instruments = new Instrument[instrumentNames.length];
+                    
+                    for(int k = 0; k < instrumentNames.length; k++) {
+                        instruments[k] = new Instrument(0, instrumentNames[k]);
+                    }
+
+                    performers.add(
+                        new Performer(0, performerNames[j], new EnsembleName(0, ensembleNamesStr[i]), instruments));
+                }
             }
-           
+                       
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(concertDate + " " + concertTime, formatter);
 
@@ -130,7 +136,7 @@ public class AddConcertServlet extends HttpServlet {
                         place,
                         programName,
                         link,
-                        performers
+                        performers.toArray(new Performer[0])
             );
 
             ConcertDAO concertDAO = new ConcertDAO();

@@ -6,6 +6,24 @@ public class Performer {
     
     private int id;
     private String name;
+    private EnsembleName ensemble;
+    private Instrument[] instruments;
+
+    public Instrument[] getInstruments() {
+        return instruments;
+    }
+
+    public void setInstruments(Instrument[] instruments) {
+        this.instruments = instruments;
+    }
+
+    public EnsembleName getEnsemble() {
+        return ensemble;
+    }
+
+    public void setEnsemble(EnsembleName ensemble) {
+        this.ensemble = ensemble;
+    }
 
     public int getId() {
         return id;
@@ -23,10 +41,17 @@ public class Performer {
         this.name = name;
     }
     
-       
     public Performer(int id, String name) {
         this.id = id;
         this.name = name;
+     
+    }
+       
+    public Performer(int id, String name, EnsembleName ensemble, Instrument[] instruments) {
+        this.id = id;
+        this.name = name;
+        this.ensemble = ensemble;
+        this.instruments = instruments;
     }
 
     @Override

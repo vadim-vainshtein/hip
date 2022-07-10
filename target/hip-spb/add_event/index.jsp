@@ -46,8 +46,9 @@
             <fieldset id="ensemble0">
                 <legend>Ансамбль №1</legend>
             
-                <p>Название ансамбля: <input></p>
-                <div><input type="button" onclick="AddPerformer(this)" value="Добавить исполнителя"></div>
+                <p>Название ансамбля: <input name="ensemble"></p>
+                <div><input type="button" onclick="AddPerformer(this)" value="Добавить исполнителя"
+                    data-ensemble-number="0" data-performers-count="0"></div>
             
             </fieldset>
             

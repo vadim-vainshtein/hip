@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
+
+import ru.hip_spb.model.Instrument;
 import ru.hip_spb.model.Performer;
 
 /**
@@ -56,6 +58,13 @@ public class PerformerDAO extends DAO<Performer> {
         } catch (SQLException exception) {
             logger.log(Level.SEVERE, "PerformerDAO.insert(): error writing DB {0}", exception.getMessage());
             throw new DAOException("error writing DB: " + exception.getMessage());
+        }
+
+        //TODO: use EnsembleDAO.getByNameOrCreate() to get ensemble id
+
+        InstrumentDAO instrumentDAO = new InstrumentDAO();
+        for(Instrument instrument : data.getInstruments()) {
+            instrumentDAO.insert(instrument);
         }
 
         return generatedID;
