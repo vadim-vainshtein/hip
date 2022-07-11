@@ -21,9 +21,7 @@
         <p>Название: <input type="text" name="program_name" /></p>
         <p>Программа:</p>
         <p>
-            <textarea name="program_text" maxlength="10000" cols="100" rows="10">
-
-            </textarea>
+            <textarea name="program_text" maxlength="10000" cols="100" rows="10"></textarea>
         </p>
         <p>
             Дата: <input type="date" name="date" />

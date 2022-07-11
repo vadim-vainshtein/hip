@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import ru.hip_spb.model.Concert;
 import ru.hip_spb.model.Performer;
+import ru.hip_spb.model.Place;
 
 
 public class ConcertDAO extends DAO<Concert> {
@@ -27,7 +28,7 @@ public class ConcertDAO extends DAO<Concert> {
     @Override
     public ArrayList<Concert> getAll() throws DAOException {
 
-        final String GET_CONCERTS_QUERY = "SELECT * FROM " + CONCERTS_TABLE;
+        final String GET_CONCERTS_QUERY = "SELECT * FROM concerts LEFT JOIN places ON concerts.place_id = places.place_id";
         final String GET_PERFORMERS_ID_QUERY = "SELECT " + PERFORMER_ID +
                 " FROM " + PERFORMERS_CONCERTS_TABLE + " WHERE " + 
                 CONCERT_ID + " = ? ";
@@ -47,8 +48,17 @@ public class ConcertDAO extends DAO<Concert> {
                 int concertId = resultSet.getInt("concert_id");
                 Timestamp timestamp = resultSet.getTimestamp("date_time");
                 LocalDateTime dateTime = timestamp.toLocalDateTime();
+                String programName = resultSet.getString("program_name");
+                String programText = resultSet.getString("program_text");
+                String link = resultSet.getString("link");
+                int placeId = resultSet.getInt("place_id");
+                String placeName = resultSet.getString("place_name");
+                String placeAddress = resultSet.getString("place_address");
+
+                Place place = new Place(placeId, placeName, placeAddress);
                 
                 // Get all the performers (IDs) of the concert
+                // TODO: just use a complex query?
                 PreparedStatement performersStatement = connection.prepareStatement(GET_PERFORMERS_ID_QUERY);
                 performersStatement.setInt(1, concertId);
                 logger.log(Level.INFO, "ConcertDAO.getAll(): Executing query: {0}",
@@ -62,15 +72,15 @@ public class ConcertDAO extends DAO<Concert> {
                     int performerId = performersSet.getInt(PERFORMER_ID);
                     performers.add(performerDAO.getById(performerId));
                 }
-
-                String programName = resultSet.getString("program_name");
+              
 
                 Concert concert = new Concert(
                         concertId,
                         dateTime,
-                        null,
+                        place,
                         programName,
-                        null,
+                        programText,
+                        link,
                         performers.toArray(new Performer[0])
                 );
 

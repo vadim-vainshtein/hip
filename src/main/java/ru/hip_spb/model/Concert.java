@@ -14,11 +14,12 @@ public class Concert {
     private String link;
     private Performer performers[];
 
-    public Concert(int concert_id, LocalDateTime dateTime, Place place, String programName, String link, Performer[] performers) {
+    public Concert(int concert_id, LocalDateTime dateTime, Place place, String programName, String programText, String link, Performer[] performers) {
         this.concert_id = concert_id;
         this.dateTime = dateTime;
         this.place = place;
         this.programName = programName;
+        this.programText = programText;
         this.link = link;
         this.performers = performers;
     }
