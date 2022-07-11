@@ -6,7 +6,7 @@ public class Performer {
     
     private int id;
     private String name;
-    private EnsembleName ensemble;
+    private String ensemble;
     private Instrument[] instruments;
 
     public Instrument[] getInstruments() {
@@ -17,11 +17,11 @@ public class Performer {
         this.instruments = instruments;
     }
 
-    public EnsembleName getEnsemble() {
+    public String getEnsemble() {
         return ensemble;
     }
 
-    public void setEnsemble(EnsembleName ensemble) {
+    public void setEnsemble(String ensemble) {
         this.ensemble = ensemble;
     }
 
@@ -47,7 +47,7 @@ public class Performer {
      
     }
        
-    public Performer(int id, String name, EnsembleName ensemble, Instrument[] instruments) {
+    public Performer(int id, String name, String ensemble, Instrument[] instruments) {
         this.id = id;
         this.name = name;
         this.ensemble = ensemble;

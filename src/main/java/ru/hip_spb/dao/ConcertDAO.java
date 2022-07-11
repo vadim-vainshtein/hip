@@ -12,15 +12,12 @@ import java.util.logging.Level;
 import ru.hip_spb.model.Concert;
 import ru.hip_spb.model.Performer;
 
-/**
- *
- *
- */
+
 public class ConcertDAO extends DAO<Concert> {
 
     private static final String CONCERTS_TABLE = "concerts";
     private static final String CONCERT_ID = "concert_id";
-    private static final String PERFORMERS_CONCERTS_TABLE = "performers_concerts";
+    private static final String PERFORMERS_CONCERTS_TABLE = "perf_instr_ensembles_concerts";
     private static final String PERFORMER_ID = "performer_id";
 
     public ConcertDAO() throws DAOException {
@@ -93,7 +90,7 @@ public class ConcertDAO extends DAO<Concert> {
 
         final String INSERT_CONCERT_QUERY = "INSERT INTO " + CONCERTS_TABLE
                 + "( program_name, place_id, date_time, link, program_text )"
-                + "VALUES (?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?)";
         
         int generatedID;
         
@@ -144,5 +141,4 @@ public class ConcertDAO extends DAO<Concert> {
     public Concert getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }

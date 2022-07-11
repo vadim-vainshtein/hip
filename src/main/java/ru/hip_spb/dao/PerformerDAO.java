@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import ru.hip_spb.model.Ensemble;
 import ru.hip_spb.model.Instrument;
 import ru.hip_spb.model.Performer;
 
@@ -27,18 +28,16 @@ public class PerformerDAO extends DAO<Performer> {
     @Override
     public int insert(Performer data) throws DAOException {
 
-        final String INSERT_PERFORMER_QUERY
-                = "INSERT INTO " + TABLE + " (" + PERFORMER_NAME + ") VALUES( ? )";
+        final String INSERT_PERFORMER_QUERY = "INSERT INTO " + TABLE + " (" + PERFORMER_NAME + ") VALUES( ? )";
 
         int generatedID;
 
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement
-                    = connection.prepareStatement(INSERT_PERFORMER_QUERY, Statement.RETURN_GENERATED_KEYS); )
-        {
+                PreparedStatement statement = connection.prepareStatement(INSERT_PERFORMER_QUERY,
+                        Statement.RETURN_GENERATED_KEYS);) {
             statement.setNString(1, data.getName());
-            
+
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
@@ -60,38 +59,29 @@ public class PerformerDAO extends DAO<Performer> {
             throw new DAOException("error writing DB: " + exception.getMessage());
         }
 
-        //TODO: use EnsembleDAO.getByNameOrCreate() to get ensemble id
-
-        InstrumentDAO instrumentDAO = new InstrumentDAO();
-        for(Instrument instrument : data.getInstruments()) {
-            instrumentDAO.insert(instrument);
-        }
-
         return generatedID;
     }
 
     @Override
     public ArrayList<Performer> getAll() throws DAOException {
-    
+
         final String QUERY = "SELECT * FROM " + TABLE;
 
         ArrayList<Performer> result = new ArrayList<>();
-        
-        try(
+
+        try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-            )
-        {
+                PreparedStatement statement = connection.prepareStatement(QUERY);) {
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 result.add(new Performer(resultSet.getInt(ID), resultSet.getString(PERFORMER_NAME)));
             }
-            
-        } catch(SQLException exception) {
+
+        } catch (SQLException exception) {
             logger.log(Level.SEVERE, null, exception);
             throw new DAOException("PerformerDAO.getAll(): error reading DB");
         }
-        
+
         return result;
     }
 
@@ -99,17 +89,16 @@ public class PerformerDAO extends DAO<Performer> {
     public Performer getById(int id) throws DAOException {
 
         final String QUERY = "SELECT * FROM " + TABLE + " WHERE " + ID + "=" + String.valueOf(id);
-        
+
         Performer performer = null;
 
         try (
                 Connection connection = connectionFactory.getConnection();
-                Statement statement = connection.createStatement();)
-        {
+                Statement statement = connection.createStatement();) {
 
             logger.log(Level.INFO, "PerformerDAO.getById() executing query: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery(QUERY);
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 String performerName = resultSet.getString(PERFORMER_NAME);
                 performer = new Performer(id, performerName);
             }
@@ -121,37 +110,35 @@ public class PerformerDAO extends DAO<Performer> {
 
         return performer;
     }
-    
+
     /**
      * Search database of Performers for <code>subString</code> in performer's name
+     * 
      * @param subString what to search in database
      * @return returns a list of performers' names, where subString is found
      */
     public ArrayList<String> getNamesList(String subString) throws DAOException {
-        
+
         final String QUERY = "SELECT " + PERFORMER_NAME + " FROM " + TABLE +
                 " WHERE LOCATE(" + subString + ", " + PERFORMER_NAME + ")>0";
-        
+
         ArrayList<String> result = new ArrayList<>();
-        
-        try(
+
+        try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-                )
-        {
+                PreparedStatement statement = connection.prepareStatement(QUERY);) {
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 result.add(resultSet.getString(PERFORMER_NAME));
             }
-            
-        } catch(SQLException exception) {
+
+        } catch (SQLException exception) {
             logger.log(Level.SEVERE, null, exception);
             throw new DAOException("PerformerDAO.getNamesList(): error reading DB");
         }
-        
+
         return result;
     }
-
 
     /**
      * Searchs database for a performer called <code>name</code> Creates one if
@@ -169,12 +156,10 @@ public class PerformerDAO extends DAO<Performer> {
                 + PERFORMER_NAME + "=" + "'" + name + "'";
 
         int id;
-                
+
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-                )
-        {
+                PreparedStatement statement = connection.prepareStatement(QUERY);) {
 
             logger.log(Level.INFO, "PerformerDAO.getByNameOrCreate(): executing statement: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery();
@@ -185,7 +170,7 @@ public class PerformerDAO extends DAO<Performer> {
             }
             // Create one if not found
             else {
-               id = insert(new Performer(0, name));
+                id = insert(new Performer(0, name));
             }
 
         } catch (SQLException exception) {
@@ -194,41 +179,59 @@ public class PerformerDAO extends DAO<Performer> {
         }
 
         logger.log(Level.INFO, "PerformerDAO.getByNameOrCreate(): OK; id = {0}", id);
-        
+
         return id;
     }
 
     /**
      * Adds a performer to a concert. The performer is identified by name,
      * performer's id is obtained while writing data to DB
-     * @param performer - a Performer to be added to a concert
+     * 
+     * @param performer  - a Performer to be added to a concert
      * @param concert_id - a concert to add the performer
      * @throws DAOException
      */
     void addToConcert(Performer performer, int concert_id) throws DAOException {
-        
-        final String QUERY = "INSERT INTO performers_concerts "
-                + "( performer_id, concert_id ) VALUES(? , ?)";
-        
+
+        final String QUERY = "INSERT INTO perf_instr_ensembles_concerts"
+                + "( performer_id, instrument_id, concert_id, ensemble_id ) VALUES(? , ?, ?, ?)";
+
         // obtain id for performer
         performer.setId(getByNameOrCreate(performer.getName()));
-        
-        try(
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-                )
-        {
-            statement.setInt(1, performer.getId());
-            statement.setInt(2, concert_id);
-            logger.log(Level.INFO, "PerformerDAO.addToConcert(): execute query " +
-                    QUERY + " performer_id = {0}concert_id = {1}",
-                    new Object[]{performer.getId(), concert_id});
-            
-            statement.executeUpdate();
-            
-        } catch(SQLException exception) {
-            logger.log(Level.SEVERE, null, exception);
-            throw new DAOException("PerformerDAO.addToConcert(): error writing DB");
+
+        EnsembleDAO ensembleDAO = new EnsembleDAO();
+        // TODO: Ensemble object should be a part of Performer. It also should then have
+        // some other name
+        Ensemble ensemble = ensembleDAO.getByNameOrCreate(performer.getEnsemble());
+
+        InstrumentDAO instrumentDAO = new InstrumentDAO();
+
+        // for each instrument there will be it's own line in the table
+        for (Instrument instrument : performer.getInstruments()) {
+
+            try (
+                    Connection connection = connectionFactory.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(QUERY);) {
+
+                // Set ID for instrument
+                // TODO: perhaps this action should be a method of InstrumentDAO?
+                instrument.setId(instrumentDAO.getByNameOrCreate(instrument.getName()).getId());
+
+                statement.setInt(1, performer.getId());
+                statement.setInt(2, instrument.getId());
+                statement.setInt(3, concert_id);
+                statement.setInt(4, ensemble.getId());
+
+                logger.log(Level.FINE, "PerformerDAO.addToConcert(): execute query " +
+                        QUERY + " performer_id = {0}instrument_id = {1}concert_id = {3}ensemble_id = {4}",
+                        new Object[] { performer.getId(), instrument.getId(), concert_id, ensemble.getId() });
+
+                statement.executeUpdate();
+
+            } catch (SQLException exception) {
+                logger.log(Level.SEVERE, null, exception);
+                throw new DAOException("PerformerDAO.addToConcert(): error writing DB");
+            }
         }
     }
 }

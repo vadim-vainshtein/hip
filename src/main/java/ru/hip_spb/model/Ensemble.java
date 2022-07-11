@@ -1,14 +1,14 @@
 package ru.hip_spb.model;
 
-public class EnsembleName {
+public class Ensemble {
     
     private int id;
     private String name;
     
-    public EnsembleName() {
+    public Ensemble() {
     }
     
-    public EnsembleName(int id, String name) {
+    public Ensemble(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -42,7 +42,7 @@ public class EnsembleName {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        EnsembleName other = (EnsembleName) obj;
+        Ensemble other = (Ensemble) obj;
         if (id != other.id)
             return false;
         if (name == null) {

@@ -1,4 +1,6 @@
 /home/dima/hip/src/main/java/ru/hip_spb/model/Place.java
+/home/dima/hip/src/main/java/ru/hip_spb/model/Ensemble.java
+/home/dima/hip/src/main/java/ru/hip_spb/dao/EnsembleDAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/model/Performer.java
 /home/dima/hip/src/main/java/ru/hip_spb/dao/DAO.java
 /home/dima/hip/src/main/java/ru/hip_spb/view/ConcertView.java
