@@ -72,7 +72,7 @@ public class Ensemble {
     public ArrayList<Performer> getPerformers() {
         return performers;
     }
-    public void setPerformers(ArrayList<Performer>) performers) {
+    public void setPerformers(ArrayList<Performer> performers) {
         this.performers = performers;
     }
     @Override

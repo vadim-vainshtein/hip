@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import ru.hip_spb.model.Ensemble;
 import ru.hip_spb.model.Instrument;
 import ru.hip_spb.model.Performer;
 
@@ -25,6 +24,9 @@ public class PerformerDAO extends DAO<Performer> {
         super();
     }
 
+    /**
+     * Insert a Performer object. This method doesn't insert the Performer.instruments array.
+     */
     @Override
     public int insert(Performer data) throws DAOException {
 
@@ -35,7 +37,7 @@ public class PerformerDAO extends DAO<Performer> {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(INSERT_PERFORMER_QUERY,
-                        Statement.RETURN_GENERATED_KEYS);){
+                        Statement.RETURN_GENERATED_KEYS);) {
             statement.setNString(1, data.getName());
 
             int rowsAffected = statement.executeUpdate();
@@ -72,6 +74,7 @@ public class PerformerDAO extends DAO<Performer> {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(QUERY);) {
+
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 result.add(new Performer(resultSet.getInt(ID), resultSet.getString(PERFORMER_NAME)));
@@ -145,12 +148,11 @@ public class PerformerDAO extends DAO<Performer> {
      * not found.
      *
      * @param name - name of a performer to be created
-     * @return Returns performer ID
+     * @return Returns a Performer object
      * @throws ru.hip_spb.dao.DAOException
      */
 
-    // TODO: return a Performer object, not just id
-    public int getIdByNameOrCreate(String name) throws DAOException {
+    public Performer getByNameOrCreate(String name) throws DAOException {
 
         final String QUERY = "SELECT * FROM " + TABLE + " WHERE "
                 + PERFORMER_NAME + "=" + "'" + name + "'";
@@ -180,7 +182,7 @@ public class PerformerDAO extends DAO<Performer> {
 
         logger.log(Level.INFO, "PerformerDAO.getByNameOrCreate(): OK; id = {0}", id);
 
-        return id;
+        return new Performer(id, name);
     }
 
     /**
@@ -191,43 +193,43 @@ public class PerformerDAO extends DAO<Performer> {
      * @param concert_id - a concert to add the performer
      * @throws DAOException
      */
-    void addToConcert(Performer performer, int concert_id) throws DAOException {
+    void addToConcert(ArrayList<Performer> performers, int ensembleId, int concertId) throws DAOException {
 
         final String QUERY = "INSERT INTO perf_instr_ensembles_concerts"
                 + "( performer_id, instrument_id, concert_id, ensemble_id ) VALUES(? , ?, ?, ?)";
 
-        // obtain id for performer
-        performer.setId(getIdByNameOrCreate(performer.getName()));
-
-        EnsembleDAO ensembleDAO = new EnsembleDAO();
-        Ensemble ensemble = ensembleDAO.getIdByNameOrCreate(performer.getEnsemble());
-
         InstrumentDAO instrumentDAO = new InstrumentDAO();
 
-        // for each instrument there will be it's own line in the table
-        for (Instrument instrument : performer.getInstruments()) {
+        for (Performer performer : performers) {
 
-            try (
-                    Connection connection = connectionFactory.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(QUERY);) {
+            // obtain an id for the performer
+            performer.setId(getByNameOrCreate(performer.getName()).getId());
 
-                // Set ID for instrument
-                instrument.setId(instrumentDAO.getByNameOrCreate(instrument.getName()).getId());
+            // for each instrument there will be it's own line in the table
+            for (Instrument instrument : performer.getInstruments()) {
 
-                statement.setInt(1, performer.getId());
-                statement.setInt(2, instrument.getId());
-                statement.setInt(3, concert_id);
-                statement.setInt(4, ensemble.getId());
+                try (
+                        Connection connection = connectionFactory.getConnection();
+                        PreparedStatement statement = connection.prepareStatement(QUERY);) {
 
-                logger.log(Level.FINE, "PerformerDAO.addToConcert(): execute query " +
-                        QUERY + " performer_id = {0}instrument_id = {1}concert_id = {3}ensemble_id = {4}",
-                        new Object[] { performer.getId(), instrument.getId(), concert_id, ensemble.getId() });
+                    // Set ID for instrument
+                    instrument.setId(instrumentDAO.getByNameOrCreate(instrument.getName()).getId());
 
-                statement.executeUpdate();
+                    statement.setInt(1, performer.getId());
+                    statement.setInt(2, instrument.getId());
+                    statement.setInt(3, concertId);
+                    statement.setInt(4, ensembleId);
 
-            } catch (SQLException exception) {
-                logger.log(Level.SEVERE, null, exception);
-                throw new DAOException("PerformerDAO.addToConcert(): error writing DB");
+                    logger.log(Level.FINE, "PerformerDAO.addToConcert(): execute query " +
+                            QUERY + " performer_id = {0}instrument_id = {1}concert_id = {3}ensemble_id = {4}",
+                            new Object[] { performer.getId(), instrument.getId(), concertId, ensembleId });
+
+                    statement.executeUpdate();
+
+                } catch (SQLException exception) {
+                    logger.log(Level.SEVERE, null, exception);
+                    throw new DAOException("PerformerDAO.addToConcert(): error writing DB");
+                }
             }
         }
     }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import ru.hip_spb.model.Ensemble;
-import ru.hip_spb.model.Performer;
 
 public class EnsembleDAO extends DAO<Ensemble> {
 
@@ -24,6 +23,9 @@ public class EnsembleDAO extends DAO<Ensemble> {
         return null;
     }
 
+    /*
+     * This method doesn't insert Ensemble.performers array
+     */
     @Override
     public int insert(Ensemble data) throws DAOException {
         
@@ -129,10 +131,7 @@ public class EnsembleDAO extends DAO<Ensemble> {
         return null;
     }
 
-    public void addToConcert(Ensemble ensemble, int generatedID) {
-
-        final String QUERY = "INSERT INTO perf_instr_ensembles_concerts"
-                + "( performer_id, instrument_id, concert_id, ensemble_id ) VALUES(? , ?, ?, ?)";
+    public void addToConcert(Ensemble ensemble, int generatedID) throws DAOException {
 
         // obtain id for ensemble
         ensemble.setId(getByNameOrCreate(ensemble.getName()).getId());
