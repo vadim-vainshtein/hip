@@ -1,28 +1,26 @@
 package ru.hip_spb.model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Performer {
     
     private int id;
     private String name;
-    private String ensemble;
-    private Instrument[] instruments;
+    private ArrayList<Instrument> instruments;
 
-    public Instrument[] getInstruments() {
-        return instruments;
-    }
-
-    public void setInstruments(Instrument[] instruments) {
+    public Performer(int id, String name, ArrayList<Instrument> instruments) {
+        this.id = id;
+        this.name = name;
         this.instruments = instruments;
     }
 
-    public String getEnsemble() {
-        return ensemble;
+    public ArrayList<Instrument> getInstruments() {
+        return instruments;
     }
 
-    public void setEnsemble(String ensemble) {
-        this.ensemble = ensemble;
+    public void setInstruments(ArrayList<Instrument> instruments) {
+        this.instruments = instruments;
     }
 
     public int getId() {
@@ -44,15 +42,9 @@ public class Performer {
     public Performer(int id, String name) {
         this.id = id;
         this.name = name;
-     
     }
        
-    public Performer(int id, String name, String ensemble, Instrument[] instruments) {
-        this.id = id;
-        this.name = name;
-        this.ensemble = ensemble;
-        this.instruments = instruments;
-    }
+
 
     @Override
     public int hashCode() {

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import ru.hip_spb.model.Ensemble;
+import ru.hip_spb.model.Performer;
 
 public class EnsembleDAO extends DAO<Ensemble> {
 
@@ -126,6 +127,19 @@ public class EnsembleDAO extends DAO<Ensemble> {
     public ArrayList<Ensemble> getAll() throws DAOException {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void addToConcert(Ensemble ensemble, int generatedID) {
+
+        final String QUERY = "INSERT INTO perf_instr_ensembles_concerts"
+                + "( performer_id, instrument_id, concert_id, ensemble_id ) VALUES(? , ?, ?, ?)";
+
+        // obtain id for ensemble
+        ensemble.setId(getByNameOrCreate(ensemble.getName()).getId());
+
+        // insert the performers with their instruments
+        PerformerDAO performerDAO = new PerformerDAO();                
+        performerDAO.addToConcert(ensemble.getPerformers(), ensemble.getId(), generatedID);
     }
     
 }

@@ -35,7 +35,7 @@ public class PerformerDAO extends DAO<Performer> {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(INSERT_PERFORMER_QUERY,
-                        Statement.RETURN_GENERATED_KEYS);) {
+                        Statement.RETURN_GENERATED_KEYS);){
             statement.setNString(1, data.getName());
 
             int rowsAffected = statement.executeUpdate();
@@ -150,7 +150,7 @@ public class PerformerDAO extends DAO<Performer> {
      */
 
     // TODO: return a Performer object, not just id
-    public int getByNameOrCreate(String name) throws DAOException {
+    public int getIdByNameOrCreate(String name) throws DAOException {
 
         final String QUERY = "SELECT * FROM " + TABLE + " WHERE "
                 + PERFORMER_NAME + "=" + "'" + name + "'";
@@ -197,10 +197,10 @@ public class PerformerDAO extends DAO<Performer> {
                 + "( performer_id, instrument_id, concert_id, ensemble_id ) VALUES(? , ?, ?, ?)";
 
         // obtain id for performer
-        performer.setId(getByNameOrCreate(performer.getName()));
+        performer.setId(getIdByNameOrCreate(performer.getName()));
 
         EnsembleDAO ensembleDAO = new EnsembleDAO();
-        Ensemble ensemble = ensembleDAO.getByNameOrCreate(performer.getEnsemble());
+        Ensemble ensemble = ensembleDAO.getIdByNameOrCreate(performer.getEnsemble());
 
         InstrumentDAO instrumentDAO = new InstrumentDAO();
 

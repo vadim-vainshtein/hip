@@ -1,8 +1,7 @@
 package ru.hip_spb.model;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class Concert {
 
@@ -12,16 +11,16 @@ public class Concert {
     private String programName;
     private String programText;
     private String link;
-    private Performer performers[];
+    private ArrayList<Ensemble> ensembles;
 
-    public Concert(int concert_id, LocalDateTime dateTime, Place place, String programName, String programText, String link, Performer[] performers) {
+    public Concert(int concert_id, LocalDateTime dateTime, Place place, String programName, String programText, String link, ArrayList<Ensemble> ensembles) {
         this.concert_id = concert_id;
         this.dateTime = dateTime;
         this.place = place;
         this.programName = programName;
         this.programText = programText;
         this.link = link;
-        this.performers = performers;
+        this.ensembles = ensembles;
     }
 
     public Concert() {
@@ -76,53 +75,78 @@ public class Concert {
         this.link = link;
     }
 
-    public Performer[] getPerformers() {
-        return performers;
+    public ArrayList<Ensemble> getEnsembles() {
+        return ensembles;
     }
 
-    public void setPerformers(Performer[] performers) {
-        this.performers = performers;
+    public void setEnsembles(ArrayList<Ensemble> ensembles) {
+        this.ensembles = ensembles;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        return hash;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + concert_id;
+        result = prime * result + ((dateTime == null) ? 0 : dateTime.hashCode());
+        result = prime * result + ((place == null) ? 0 : place.hashCode());
+        result = prime * result + ((programName == null) ? 0 : programName.hashCode());
+        result = prime * result + ((programText == null) ? 0 : programText.hashCode());
+        result = prime * result + ((link == null) ? 0 : link.hashCode());
+        result = prime * result + ((ensembles == null) ? 0 : ensembles.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
-        final Concert other = (Concert) obj;
-        if (this.concert_id != other.concert_id) {
+        Concert other = (Concert) obj;
+        if (concert_id != other.concert_id)
             return false;
-        }
-        if (!Objects.equals(this.programName, other.programName)) {
+        if (dateTime == null) {
+            if (other.dateTime != null)
+                return false;
+        } else if (!dateTime.equals(other.dateTime))
             return false;
-        }
-        if (!Objects.equals(this.link, other.link)) {
+        if (place == null) {
+            if (other.place != null)
+                return false;
+        } else if (!place.equals(other.place))
             return false;
-        }
-        if (!Objects.equals(this.dateTime, other.dateTime)) {
+        if (programName == null) {
+            if (other.programName != null)
+                return false;
+        } else if (!programName.equals(other.programName))
             return false;
-        }
-        if (!Objects.equals(this.place, other.place)) {
+        if (programText == null) {
+            if (other.programText != null)
+                return false;
+        } else if (!programText.equals(other.programText))
             return false;
-        }
-        return Arrays.deepEquals(this.performers, other.performers);
+        if (link == null) {
+            if (other.link != null)
+                return false;
+        } else if (!link.equals(other.link))
+            return false;
+        if (ensembles == null) {
+            if (other.ensembles != null)
+                return false;
+        } else if (!ensembles.equals(other.ensembles))
+            return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Concert{" + "concert_id=" + concert_id + ", dateTime=" + dateTime + ", place=" + place + ", programName=" + programName + ", link=" + link + ", performers=" + performers + '}';
+        return "Concert [concert_id=" + concert_id + ", dateTime=" + dateTime + ", place=" + place + ", programName="
+                + programName + ", programText=" + programText + ", link=" + link + ", ensembles=" + ensembles + "]";
     }
+
+    
 
 }

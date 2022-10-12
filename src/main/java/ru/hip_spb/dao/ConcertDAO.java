@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import ru.hip_spb.model.Concert;
+import ru.hip_spb.model.Ensemble;
 import ru.hip_spb.model.Performer;
 import ru.hip_spb.model.Place;
 
@@ -136,11 +137,11 @@ public class ConcertDAO extends DAO<Concert> {
             throw new DAOException("error writing DB: " + ex.getMessage());
         }
         
-        PerformerDAO performerDAO = new PerformerDAO();
+        EnsembleDAO ensembleDAO = new EnsembleDAO();
         
-        // get IDs for every performer from db (or create them)
-        for(Performer performer : data.getPerformers()) {
-            performerDAO.addToConcert(performer, generatedID);
+        // get IDs for every ensemble from db (or create them)
+        for(Ensemble ensemble : data.getEnsembles()) {
+            ensembleDAO.addToConcert(ensemble, generatedID);
         }
 
         return generatedID;
