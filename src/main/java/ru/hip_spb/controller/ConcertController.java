@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.model.Concert;
+import ru.hip_spb.model.Ensemble;
 import ru.hip_spb.view.ConcertView;
 
 /**
@@ -38,7 +39,7 @@ public class ConcertController {
             
     /**
      * Uses ConcertView to format information from concerts array
-     * @return Returns a String object containing formatted information
+     * @return Returns a String object containing html formatted information
      * from concerts array.
      */
     public String format() {
@@ -46,6 +47,7 @@ public class ConcertController {
         StringBuilder stringBuilder = new StringBuilder();
         
         for(Concert concert : concerts) {
+
             stringBuilder.append(view.format(
                     concert.getProgramName(),
                     concert.getDateTime(),

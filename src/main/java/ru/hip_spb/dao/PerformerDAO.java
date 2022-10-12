@@ -200,8 +200,6 @@ public class PerformerDAO extends DAO<Performer> {
         performer.setId(getByNameOrCreate(performer.getName()));
 
         EnsembleDAO ensembleDAO = new EnsembleDAO();
-        // TODO: Ensemble object should be a part of Performer. It also should then have
-        // some other name
         Ensemble ensemble = ensembleDAO.getByNameOrCreate(performer.getEnsemble());
 
         InstrumentDAO instrumentDAO = new InstrumentDAO();
@@ -214,7 +212,6 @@ public class PerformerDAO extends DAO<Performer> {
                     PreparedStatement statement = connection.prepareStatement(QUERY);) {
 
                 // Set ID for instrument
-                // TODO: perhaps this action should be a method of InstrumentDAO?
                 instrument.setId(instrumentDAO.getByNameOrCreate(instrument.getName()).getId());
 
                 statement.setInt(1, performer.getId());

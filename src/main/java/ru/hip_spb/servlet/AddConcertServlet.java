@@ -109,19 +109,24 @@ public class AddConcertServlet extends HttpServlet {
             String performerNames[] = request.getParameterValues("performer" + i);
 
             // Generate Performer objects
-            for (int j = 0; j < performerNames.length; j++) {
+            try {
+                for (int j = 0; j < performerNames.length; j++) {
 
-                String[] instrumentNames = request.getParameterValues("instrument" + i + "_" + j);
+                    String[] instrumentNames = request.getParameterValues("instrument" + i + "_" + j);
 
-                Instrument[] instruments = new Instrument[instrumentNames.length];
+                    Instrument[] instruments = new Instrument[instrumentNames.length];
 
-                for (int k = 0; k < instrumentNames.length; k++) {
-                    instruments[k] = new Instrument(0, instrumentNames[k]);
+                    for (int k = 0; k < instrumentNames.length; k++) {
+                        instruments[k] = new Instrument(0, instrumentNames[k]);
+                    }
+
+                    performers.add(
+                            new Performer(0, performerNames[j], ensembleNames[i], instruments));
+
                 }
 
-                performers.add(
-                        new Performer(0, performerNames[j], ensembleNames[i], instruments));
-
+            } catch (NullPointerException exception) {
+                
             }
         }
 

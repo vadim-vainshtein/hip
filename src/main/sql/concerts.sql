@@ -43,14 +43,6 @@ CREATE TABLE ensembles
 	ensemble_name	VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE performers_concerts
-(
-	performer_id	INT,
-	concert_id	INT,
-	FOREIGN KEY (performer_id) REFERENCES performers (performer_id),
-	FOREIGN KEY (concert_id) REFERENCES concerts (concert_id)
-);
-
 CREATE TABLE perf_instr_ensembles_concerts
 (
 	performer_id	INT,

@@ -41,7 +41,7 @@ public class ConcertDAO extends DAO<Concert> {
                 ) 
         {
             ResultSet resultSet = statement.executeQuery(GET_CONCERTS_QUERY);
-            
+        
             PerformerDAO performerDAO = new PerformerDAO();
 
             while (resultSet.next()) {

@@ -1,7 +1,7 @@
 ru/hip_spb/model/Ensemble.class
 ru/hip_spb/dao/InstrumentDAO.class
-ru/hip_spb/controller/ConcertController.class
 ru/hip_spb/model/Place.class
+ru/hip_spb/controller/ConcertController.class
 ru/hip_spb/dao/EnsembleDAO.class
 ru/hip_spb/controller/PerformerController.class
 ru/hip_spb/dao/DAOException.class
@@ -11,8 +11,8 @@ ru/hip_spb/model/Performer.class
 ru/hip_spb/model/Concert.class
 ru/hip_spb/dao/ConnectionFactory.class
 ru/hip_spb/dao/PerformerDAO.class
-ru/hip_spb/view/ConcertView.class
 ru/hip_spb/dao/DAO.class
+ru/hip_spb/view/ConcertView.class
 ru/hip_spb/servlet/AddConcertServlet.class
 ru/hip_spb/dao/PlaceDAO.class
 ru/hip_spb/controller/PlaceController.class

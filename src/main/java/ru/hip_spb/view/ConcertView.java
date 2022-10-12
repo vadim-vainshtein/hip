@@ -26,10 +26,5 @@ public class ConcertView {
         
         return result;
     }
-    
-    public void print(String programName) throws IOException {
-        writer.write("<div>");
-        writer.write(programName);
-        writer.write("</div>");
-    }
+
 }
