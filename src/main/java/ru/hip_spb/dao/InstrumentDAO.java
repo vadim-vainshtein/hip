@@ -19,8 +19,26 @@ public class InstrumentDAO extends DAO<Instrument> {
 
     @Override
     public Instrument getById(int id) throws DAOException {
-        // TODO Auto-generated method stub
-        return null;
+        final String QUERY = "select * from instruments where instrument_id = " + id;
+
+        Instrument instrument = null;
+
+        try (Connection connection = connectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(QUERY); ) {
+            
+            logger.log(Level.INFO, "InstrumentDAO.getById() executing query: {0}", QUERY);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if(resultSet.next()) {
+                String name = resultSet.getString("instrument_name");
+                instrument = new Instrument(id, name);
+            }
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, null, e);
+            throw new DAOException("InstrumentDAO.getById(): error reading DB");
+        }
+        return instrument;
     }
 
     @Override

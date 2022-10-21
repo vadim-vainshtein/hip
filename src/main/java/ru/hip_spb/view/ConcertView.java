@@ -1,9 +1,10 @@
 package ru.hip_spb.view;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
-import ru.hip_spb.model.Performer;
+import java.util.List;
+
+import ru.hip_spb.model.Ensemble;
 
 
 public class ConcertView {
@@ -14,17 +15,16 @@ public class ConcertView {
         this.writer = writer;
     }
     
-    public String format(String programName, LocalDateTime dateTime, Performer[] performers) {
+    public String format(String programName, LocalDateTime dateTime, List<Ensemble> ensembles) {
         
         String result = "<br><h1>" + programName + "</h1><br>" + dateTime.toString();
         
-        for(Performer performer : performers) {
-            result += "<p>" + performer.getName() + "</p>";
+        for(Ensemble ensemble : ensembles) {
+            result += "<p>" + ensemble.getName() + "</p>";
         }
         
         result += "<hr>";
         
         return result;
     }
-
 }

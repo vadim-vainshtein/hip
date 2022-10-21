@@ -91,20 +91,19 @@ public class PerformerDAO extends DAO<Performer> {
     @Override
     public Performer getById(int id) throws DAOException {
 
-        final String QUERY = "SELECT * FROM " + TABLE + " WHERE " + ID + "=" + String.valueOf(id);
+        final String QUERY = "SELECT * FROM " + TABLE + " WHERE " + ID + "=" + id;
 
         Performer performer = null;
 
         try (
-                Connection connection = connectionFactory.getConnection();
-                Statement statement = connection.createStatement();) {
+            Connection connection = connectionFactory.getConnection();
+            Statement statement = connection.createStatement();) {
 
             logger.log(Level.INFO, "PerformerDAO.getById() executing query: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery(QUERY);
-            if (resultSet.next()) {
-                String performerName = resultSet.getString(PERFORMER_NAME);
-                performer = new Performer(id, performerName);
-            }
+
+            String performerName = resultSet.getString(PERFORMER_NAME);
+            performer = new Performer(id, performerName);
 
         } catch (SQLException exception) {
             logger.log(Level.SEVERE, null, exception);

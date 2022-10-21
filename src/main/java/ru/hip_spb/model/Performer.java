@@ -15,6 +15,12 @@ public class Performer {
         this.instruments = instruments;
     }
 
+    public Performer(int id, String name) {
+        this.id = id;
+        this.name = name;
+        instruments = new ArrayList<>();
+    }
+
     public ArrayList<Instrument> getInstruments() {
         return instruments;
     }
@@ -37,13 +43,7 @@ public class Performer {
 
     public void setName(String name) {
         this.name = name;
-    }
-    
-    public Performer(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-       
+    }       
 
 
     @Override

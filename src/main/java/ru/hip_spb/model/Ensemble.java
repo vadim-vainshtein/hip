@@ -14,7 +14,7 @@ public class Ensemble {
     public Ensemble(int id, String name) {
         this.id = id;
         this.name = name;
-        performers.clear();
+        performers = new ArrayList<>();
     }
 
     public Ensemble(int id, String name, ArrayList<Performer> performers) {

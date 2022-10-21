@@ -19,8 +19,28 @@ public class EnsembleDAO extends DAO<Ensemble> {
 
     @Override
     public Ensemble getById(int id) throws DAOException {
-        // TODO Auto-generated method stub
-        return null;
+
+        final String QUERY = "SELECT * FROM ensembles WHERE ensemble_id = " + id;
+        
+        Ensemble ensemble = null;
+        try (
+            Connection connection = connectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(QUERY);) {
+
+            logger.log(Level.INFO, "EnsembleDAO.getById() executing query: {0}", QUERY);
+            ResultSet resultSet = statement.executeQuery();
+            String name = resultSet.getString("ensemble_name");
+
+            if(resultSet.next())
+            {
+                ensemble = new Ensemble(id, name);
+            }
+
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, null, exception);
+            throw new DAOException("EnsembleDAO.getById(): error reading DB");
+        }
+        return ensemble;
     }
 
     /*
@@ -28,20 +48,17 @@ public class EnsembleDAO extends DAO<Ensemble> {
      */
     @Override
     public int insert(Ensemble data) throws DAOException {
-        
-        final String INSERT_ENSEMBLE_QUERY
-                = "INSERT INTO ensembles (ensemble_name) VALUES( ? )";
+
+        final String INSERT_ENSEMBLE_QUERY = "INSERT INTO ensembles (ensemble_name) VALUES( ? )";
 
         int generatedID;
 
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement
-                    = connection.prepareStatement(INSERT_ENSEMBLE_QUERY, Statement.RETURN_GENERATED_KEYS);
-            )
-        {
+                PreparedStatement statement = connection.prepareStatement(INSERT_ENSEMBLE_QUERY,
+                        Statement.RETURN_GENERATED_KEYS);) {
             statement.setNString(1, data.getName());
-            
+
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected == 0) {
@@ -66,7 +83,6 @@ public class EnsembleDAO extends DAO<Ensemble> {
         return generatedID;
     }
 
-
     /**
      * @param name
      * @return Returns a Ensemble object. If there is no match in DB, id=0
@@ -77,12 +93,10 @@ public class EnsembleDAO extends DAO<Ensemble> {
         final String QUERY = "SELECT * FROM ensembles WHERE ensemble_name = '" + name + "'";
 
         int id = 0;
-                        
+
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(QUERY);
-            )
-        {
+                PreparedStatement statement = connection.prepareStatement(QUERY);) {
             logger.log(Level.INFO, "EnsembleDAO.getByName(): executing statement: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery();
 
@@ -90,13 +104,13 @@ public class EnsembleDAO extends DAO<Ensemble> {
             if (resultSet.next()) {
                 id = resultSet.getInt("ensemble_id");
             }
-            
+
         } catch (SQLException exception) {
             logger.log(Level.SEVERE, "EnsembleDAO.getByNameOrCreate(): error writing DB", exception);
             throw new DAOException("EnsembleDAO.getByNameOrCreate(): error writing DB");
         }
 
-        //TODO: is id=0 the best way to show, that object was not found?
+        // TODO: is id=0 the best way to show, that object was not found?
         return new Ensemble(id, name);
     }
 
@@ -110,18 +124,17 @@ public class EnsembleDAO extends DAO<Ensemble> {
      */
     public Ensemble getByNameOrCreate(String name) throws DAOException {
 
-        
         // Try to find Ensemble in DB
         Ensemble ensemble = getByName(name);
 
         // Create one if not found
-        if(ensemble.getId() == 0) {
+        if (ensemble.getId() == 0) {
             int id = insert(ensemble);
             ensemble.setId(id);
         }
 
         logger.log(Level.INFO, "EnsembleDAO.getByNameOrCreate(): OK; id = {0}", ensemble.getId());
-        
+
         return ensemble;
     }
 
@@ -137,8 +150,8 @@ public class EnsembleDAO extends DAO<Ensemble> {
         ensemble.setId(getByNameOrCreate(ensemble.getName()).getId());
 
         // insert the performers with their instruments
-        PerformerDAO performerDAO = new PerformerDAO();                
+        PerformerDAO performerDAO = new PerformerDAO();
         performerDAO.addToConcert(ensemble.getPerformers(), ensemble.getId(), generatedID);
     }
-    
+
 }

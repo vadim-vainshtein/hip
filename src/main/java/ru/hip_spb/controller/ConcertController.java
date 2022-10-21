@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import ru.hip_spb.dao.ConcertDAO;
 import ru.hip_spb.dao.DAOException;
 import ru.hip_spb.model.Concert;
-import ru.hip_spb.model.Ensemble;
 import ru.hip_spb.view.ConcertView;
 
 /**
@@ -51,7 +50,7 @@ public class ConcertController {
             stringBuilder.append(view.format(
                     concert.getProgramName(),
                     concert.getDateTime(),
-                    concert.getPerformers()));
+                    concert.getEnsembles()));
         }
         
         return stringBuilder.toString();
