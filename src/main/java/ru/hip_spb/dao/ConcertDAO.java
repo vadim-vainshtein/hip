@@ -81,7 +81,7 @@ public class ConcertDAO extends DAO<Concert> {
                     }
                     
                     if(currentPerformerId != performerId) {
-                        currentEnsembleId = performerId;
+                        currentPerformerId = performerId;
                         currentPerformer = performerDAO.getById(performerId);
                         currentEnsemble.getPerformers().add(currentPerformer);
                     }

@@ -1,0 +1,72 @@
+body {
+margin:0 10%;
+}
+
+.concert_wrapper {
+padding:2%;
+margin: 2%;
+border:solid 1px;
+cursor:pointer;
+}
+
+.date_name_wrapper {
+
+}
+
+.details_wrapper {
+display:none;
+vertical-align:top;
+padding:0;
+margin:0;
+}
+
+.day {
+font-size:5em;
+display:inline-block;
+}
+
+.month {
+font-size:2em;
+}
+
+.time {
+font-size:2em;
+}
+
+.month_time_wrapper {
+padding-left: 3%;
+display:inline-block;
+}
+
+.title {
+font-size: 3em;
+font-weight: bold;
+display:inline-block;
+padding-left:10%;
+vertical-align:top;
+}
+
+.ensemble {
+font-size: 2em;
+padding:0;
+margin:0;
+}
+
+.performers {
+list-style-type:none;
+font-size:0.7em;
+padding:0;
+}
+
+.performers li {
+margin-left:0;
+}
+
+.place {
+font-size:1.5em;
+}
+
+.program {
+padding:5%;
+font-size:2em;
+}

@@ -43,14 +43,14 @@ function AddEnsemble(button) {
     let fieldSet = document.createElement("fieldset");
     let legend = document.createElement("legend");
     let ensembleNameP = document.createElement("p");
-    let ensemleInput = document.createElement("input");
+    let ensembleInput = document.createElement("input");
     let performersWrapperDiv = document.createElement("div");
     let addPerformerButton = document.createElement("input");
 
     fieldSet.id = "ensemble" + ensemblesCount;
     legend.innerHTML = "Ансамбль №" + (ensemblesCount + 1);
     ensembleNameP.innerHTML = "Название ансамбля: ";
-    ensemleInput.name = "ensemble";
+    ensembleInput.name = "ensemble";
     
     addPerformerButton.type = "button";
     addPerformerButton.value = "Добавить исполнителя";

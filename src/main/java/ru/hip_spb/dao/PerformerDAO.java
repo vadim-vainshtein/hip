@@ -96,15 +96,16 @@ public class PerformerDAO extends DAO<Performer> {
         Performer performer = null;
 
         try (
-            Connection connection = connectionFactory.getConnection();
-            Statement statement = connection.createStatement();) {
+                Connection connection = connectionFactory.getConnection();
+                Statement statement = connection.createStatement();) {
 
             logger.log(Level.INFO, "PerformerDAO.getById() executing query: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery(QUERY);
 
-            String performerName = resultSet.getString(PERFORMER_NAME);
-            performer = new Performer(id, performerName);
-
+            if (resultSet.next()) {
+                String performerName = resultSet.getString(PERFORMER_NAME);
+                performer = new Performer(id, performerName);
+            }
         } catch (SQLException exception) {
             logger.log(Level.SEVERE, null, exception);
             throw new DAOException("PerformerDAO.getById(): error reading DB");
@@ -115,7 +116,7 @@ public class PerformerDAO extends DAO<Performer> {
 
     /**
      * Search database of Performers for <code>subString</code> in performer's name
-     * 
+     *
      * @param subString what to search in database
      * @return returns a list of performers' names, where subString is found
      */
@@ -187,7 +188,7 @@ public class PerformerDAO extends DAO<Performer> {
     /**
      * Adds a performer to a concert. The performer is identified by name,
      * performer's id is obtained while writing data to DB
-     * 
+     *
      * @param performer  - a Performer to be added to a concert
      * @param concert_id - a concert to add the performer
      * @throws DAOException
@@ -220,8 +221,8 @@ public class PerformerDAO extends DAO<Performer> {
                     statement.setInt(4, ensembleId);
 
                     logger.log(Level.FINE, "PerformerDAO.addToConcert(): execute query " +
-                            QUERY + " performer_id = {0}instrument_id = {1}concert_id = {3}ensemble_id = {4}",
-                            new Object[] { performer.getId(), instrument.getId(), concertId, ensembleId });
+                                    QUERY + " performer_id = {0}instrument_id = {1}concert_id = {3}ensemble_id = {4}",
+                            new Object[]{performer.getId(), instrument.getId(), concertId, ensembleId});
 
                     statement.executeUpdate();
 

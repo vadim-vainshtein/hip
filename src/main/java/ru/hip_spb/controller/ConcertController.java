@@ -44,13 +44,20 @@ public class ConcertController {
     public String format() {
         
         StringBuilder stringBuilder = new StringBuilder();
-        
-        for(Concert concert : concerts) {
+
+        for(int i = 0; i < concerts.size(); i++) {
+
+            Concert concert = concerts.get(i);
 
             stringBuilder.append(view.format(
                     concert.getProgramName(),
                     concert.getDateTime(),
-                    concert.getEnsembles()));
+                    concert.getEnsembles(),
+                    concert.getPlace().getName(),
+                    concert.getPlace().getAddress(),
+                    concert.getProgramText(),
+                    concert.getLink(),
+                    i));
         }
         
         return stringBuilder.toString();

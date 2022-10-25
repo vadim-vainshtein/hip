@@ -29,10 +29,10 @@ public class EnsembleDAO extends DAO<Ensemble> {
 
             logger.log(Level.INFO, "EnsembleDAO.getById() executing query: {0}", QUERY);
             ResultSet resultSet = statement.executeQuery();
-            String name = resultSet.getString("ensemble_name");
 
             if(resultSet.next())
             {
+                String name = resultSet.getString("ensemble_name");
                 ensemble = new Ensemble(id, name);
             }
 
@@ -110,7 +110,7 @@ public class EnsembleDAO extends DAO<Ensemble> {
             throw new DAOException("EnsembleDAO.getByNameOrCreate(): error writing DB");
         }
 
-        // TODO: is id=0 the best way to show, that object was not found?
+        // TODO: is id=0 the best way to show that object was not found?
         return new Ensemble(id, name);
     }
 

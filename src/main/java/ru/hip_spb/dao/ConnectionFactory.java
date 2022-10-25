@@ -9,8 +9,8 @@ import javax.naming.NamingException;
 
 /**
  *
- * Provides a DB connection pool using Tomcat's Data Source Data Source is
- * described in server.xml Tomcat's config and connected via web.xml
+ * Provides a DB connection pool using Tomcat's Data Source
+ * Data Source is described in server.xml Tomcat's config and connected via web.xml
  */
 public class ConnectionFactory {
 
